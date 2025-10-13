@@ -4,6 +4,9 @@ Este repositório contém o **frontend da aplicação Easy Route**, construído 
 
 ---
 
+## Figma
+https://www.figma.com/design/Gagf8ajBSSA9NMvBzYb00f/ROTA-F%C3%81CIL-V2?node-id=109-88&t=kbMyjhbhUyJ5IgjA-1
+
 ## 1. Como rodar a aplicação
 
 ### 1️⃣ Instalar dependências
