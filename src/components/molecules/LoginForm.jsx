@@ -38,20 +38,21 @@ export default function LoginForm() {
           id="password"
           label="Senha"
           type={showPwd ? "text" : "password"}
-          placeholder="Digite uma senha"
+          placeholder="Digite sua senha"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           rightElement={
             <button
-              type="button"
-              className="eye-btn"
-              onClick={() => setShowPwd((s) => !s)}
+             type="button"
+             className="eye-btn"
+             onClick={() => setShowPwd((s) => !s)}
               aria-label="Alternar visibilidade da senha"
             >
-              <EyeIcon open={showPwd} />
-            </button>
-          }
-        />
+        <EyeIcon open={showPwd} />
+    </button>
+  }
+/>
+
       </div>
 
       <div className="button-wrap">
