@@ -1,0 +1,303 @@
+.login-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  font-family: "Inter", sans-serif;
+  background-color: #f9fafb;
+}
+
+/* ==== LADO ESQUERDO ==== */
+.left-side {
+  position: relative;
+  width: 50%;
+  background-color: #2563eb;
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  opacity: 0.9;
+}
+
+/* Formas ajustadas para o layout atual */
+.blob1 {
+  z-index: 4;
+  width: 420px;
+  top: 270px;
+  left: 400px;
+  transform: rotate(0);
+  opacity: 1;
+}
+
+.blob2 {
+  z-index: 3;
+  width: 550px;
+  top: 160px;
+  left: 110px;
+  transform: rotate(0);
+  opacity: 1;
+  color: #243483;
+}
+
+.blob3 {
+  z-index: 2;
+  width: 650px;
+  top: 130px;
+  left: 170px;
+  transform: rotate(0);
+  opacity: 1;
+}
+
+.bus {
+  position: relative;
+  z-index: 4;
+  width: 450px;
+  top: -60px;
+  left: 500px;
+  transform: rotate(0);
+  opacity: 1;
+}
+.ball1 {
+  position: relative;
+  z-index: 1;
+  width: 450px;
+  top: 310px;
+  left: 310px;
+  transform: rotate(0);
+  opacity: 1;
+}
+.ball2 {
+  position: relative;
+  z-index: 1;
+  width: 270px;
+  bottom: 345px;
+  right: 678px;
+  transform: rotate(0);
+  opacity: 1;
+}
+
+.rotafacil {
+  position: relative;
+  z-index: 4;
+  width: 450px;
+  top: -430px;
+  left: -550px;
+  transform: rotate(0);
+  opacity: 1;
+}
+
+.background-logo {
+  position: absolute;
+  width: 500px;
+  bottom: 0;
+  left: 0;
+  opacity: 1;
+}
+
+.left-text {
+  position: absolute;
+  bottom: 50px; /* Ajusta a distância do fundo — pode aumentar/diminuir */
+  left: 350px;   /* Ajuste horizontal */
+  width: 500px; /* Mantém o texto proporcional e sem quebrar estranho */
+  font-size: 11px;
+  font-weight: 300;
+  color: white;
+  line-height: 1.4;
+  letter-spacing: 0.3px;
+  z-index: 4; /* Fica acima dos blobs */
+}
+
+/* ==== LADO DIREITO ==== */
+.right-side {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 80px;
+}
+
+.right-side h1 {
+ position: absolute;
+  top: 178px;
+  left: 1218px;
+  width: 384px;
+  height: 47px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 39px;
+  line-height: 47px;
+  color: #111827;
+  margin-bottom: 10px;
+  
+}
+
+.cadastro-text{
+  position: absolute;
+  top: 294px;
+  left: 1451px;
+  width: 301px;
+  height: 26px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 26px;
+  color: #6b7280;
+  opacity: 1;
+}
+
+.cadastro-text a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Empurra um pouco mais pra direita */
+.right-side form {
+  width: 100%;
+  max-width: 582px; /* Escalado */
+  margin-left: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.label-email,
+.label-senha {
+  font-size: 18px;
+  color: #111827;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+input {
+  height: 65px;
+  width: 582px;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 0 12px;
+  font-size: 18px;
+  margin-bottom: 16px;
+  margin-bottom: 20px;
+  background-color: #F3F4F6;
+}
+
+button {
+  position: absolute; /* Mantendo fixo conforme Figma */
+  top: 615px;
+  left: 1140px;
+  width: 582px;
+  height: 88px;
+  background: linear-gradient(90deg, #2563eb, #3b82f6);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 30px; /* Pode ajustar se quiser aumentar proporcionalmente */
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+/* ===== Layout geral ===== */
+.login-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: #F9FAFB;
+  font-family: "Inter", sans-serif;
+  overflow: hidden;
+}
+
+/* ===== Metade azul ===== */
+.left-side {
+  width: 50%;
+  height: 100%;
+  background-color: #2563EB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Metade branca ===== */
+.right-side {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 100px;
+  box-sizing: border-box;
+}
+
+/* ===== Título ===== */
+.login-title {
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 36px;
+  color: #1F2937;
+  margin-bottom: 20px;
+}
+
+/* ===== Texto "Não tem uma conta?" ===== */
+.signup-text {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 40px;
+}
+
+.no-account {
+  font-weight: 400;
+  font-size: 14px;
+  color: #4B5563;
+}
+
+.signup-link {
+  font-weight: 600;
+  font-size: 14px;
+  color: #2563EB;
+  text-decoration: none;
+}
+
+/* ===== Inputs ===== */
+.input-label {
+  display: block;
+  font-weight: 500;
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.input-field {
+  width: 448px;
+  height: 50px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  background-color: #F3F4F6;
+  padding: 0 14px;
+  font-size: 16px;
+  color: #757575;
+  margin-bottom: 20px;
+}
+
+/* ===== Botão ===== */
+.login-button {
+  width: 448px;
+  height: 68px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #4F46E5 0%, #3B82F6 100%);
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 32px;
+  cursor: pointer;
+  margin-top: 10px;
+  align-self: flex-start;
+  transition: opacity 0.3s ease;
+}
+
+.login-button:hover {
+  opacity: 0.9;
+}
