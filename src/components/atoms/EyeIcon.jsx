@@ -1,7 +1,7 @@
 import React from "react";
 import { Eye, EyeOff } from "lucide-react";
 
-export default function EyeIcon({ open }) {
+export default function EyeIcon({ open, onClick }) {
   const Icon = open ? EyeOff : Eye;
 
   return (
@@ -11,8 +11,12 @@ export default function EyeIcon({ open }) {
       strokeWidth={2}
       style={{
         cursor: "pointer",
-        marginRight: "10px",
+        position: "absolute",
+        right: "12px",
+        top: "50%",
+        transform: "translateY(-50%)",
       }}
+      onClick={onClick}
     />
   );
 }
