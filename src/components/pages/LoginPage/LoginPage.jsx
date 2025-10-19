@@ -5,16 +5,17 @@ import LoginForm from "../../molecules/LoginForm/LoginForm.jsx";
 
 export default function LoginPage() {
   return (
-    <Grid container sx={{ height: "100vh" }}>
+    <Grid container sx={{ height: "100vh", flexDirection: { xs: "column", md: "row" } }}>
       {/* Lado esquerdo */}
       <Grid
         sx={{
-          flexBasis: { xs: "100%", md: "50%" }, // 100% mobile, 50% desktop
-          backgroundColor: "#00BFA6", // cor do Figma
+          flexBasis: { xs: "100%", md: "50%" },
+          flexShrink: 0,
+          backgroundColor: { xs: "#ffffffff", md: "#2563EB" }, // cor do Figma
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: { xs: "300px", md: "auto" }, // garante altura mínima em mobile
+          minHeight: { xs: "50%", md: "100%" }, // altura proporcional no mobile
         }}
       >
         <LeftPanel />
@@ -24,18 +25,18 @@ export default function LoginPage() {
       <Grid
         sx={{
           flexBasis: { xs: "100%", md: "50%" },
-          backgroundColor: "#F9FAFB",
           display: "flex",
-          alignItems: "center",
+          alignItems: { xs: "flex-start", md: "center" },
           justifyContent: "center",
-          px: { xs: 2, md: 0 }, // padding responsivo
+          backgroundColor: "#F9FAFB",
+          px: { xs: 3, md: 0 }, // padding responsivo
+          py: { xs: 48, md: 0 }, // espaço vertical no mobile
         }}
       >
         <Box
           sx={{
             width: "100%",
             maxWidth: 400, // largura máxima do formulário
-            px: 3,
           }}
         >
           <LoginForm />

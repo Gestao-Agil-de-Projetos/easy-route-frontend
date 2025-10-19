@@ -7,30 +7,33 @@ import bus from "../../../assets/bus.png";
 import ball1 from "../../../assets/ball1.png";
 import ball2 from "../../../assets/ball2.png";
 import rotafacil from "../../../assets/rotafacil.png";
+import rotafacil2 from "../../../assets/rotafacil2.png";
 
 export default function LeftPanel() {
   return (
     <Box
-      sx={{
-        position: "relative",
-        height: "100vh",
-        width: "100%",
-        backgroundColor: "#2563EB",
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+  sx={{
+    position: "absolute",        // absolute para poder controlar top/left
+    top: { xs: 0, md: 0 },       // no mobile e desktop
+    left: { xs: 0, md: 0 },      // desktop fica na esquerda (0), mobile 0
+    width: { xs: "100%", md: "50%" },  // mobile ocupa 100% da largura
+    height: { xs: "40%", md: "100%" }, // mobile altura automática
+    backgroundColor: "#2563EB",
+    overflow: "hidden",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  }}
+>
       <Box
         component="img"
         src={blob3}
         alt="blob3"
         sx={{
           position: "absolute",
-          width: "67%",
-          top: "15%",
-          left: "21%",
+          width: { xs: "40%", md:"67%"},
+          top: { xs: "20%", md:"15%"},
+          left: { xs: "34%", md:"21%"},
           zIndex: 1,
         }}
       />
@@ -40,9 +43,9 @@ export default function LeftPanel() {
         alt="blob2"
         sx={{
           position: "absolute",
-          width: "56%",
-          top: "19%",
-          left: "17%",
+          width: { xs: "38%", md:"56%"},
+          top: { xs: "20%", md:"19%"},
+          left: { xs: "13%", md:"17%"},
           zIndex: 2,
         }}
       />
@@ -52,9 +55,9 @@ export default function LeftPanel() {
         alt="blob1"
         sx={{
           position: "absolute",
-          width: "48%",
-          top: "21%",
-          left: "43%",
+          width: { xs: "30%", md:"48%"},
+          top: { xs: "20%", md:"21%"},
+          left: { xs: "57%", md:"43%"},
           zIndex: 3,
         }}
       />
@@ -64,9 +67,9 @@ export default function LeftPanel() {
         alt="bus"
         sx={{
           position: "absolute",
-          width: "53%",
-          top: "23%",
-          left: "29%",
+          width: { xs: "34%", md:"53%"},
+          top: { xs: "25%", md:"23%"},
+          left: { xs: "34%", md:"29%"},
           zIndex: 4,
         }}
       />
@@ -76,9 +79,9 @@ export default function LeftPanel() {
         alt="ball1"
         sx={{
           position: "absolute",
-          width: "45%",
-          top: "66%",
-          left: "57%",
+          width: { xs: "80%", md:"45%"},
+          top: { xs: "23%", md:"66%"},
+          left: { xs: "23%", md:"57%"},
         }}
       />
       <Box
@@ -87,8 +90,8 @@ export default function LeftPanel() {
         alt="ball2"
         sx={{
           position: "absolute",
-          width: "32%",
-          top: "0%",
+          width: { xs: "50%", md:"32%"},
+          top: "-7%",
           left: "0%",
         }}
       />
@@ -98,9 +101,21 @@ export default function LeftPanel() {
         alt="Rota Fácil"
         sx={{
           position: "absolute",
-          width: "25%",
+          width: { xs: "0%", md:"25%"},
           top: "5%",
           left: "38%",
+          zIndex: 5,
+        }}
+      />
+      <Box
+        component="img"
+        src={rotafacil2}
+        alt="Rota Fácil"
+        sx={{
+          position: "absolute",
+          width: { xs: "50%", md:"0%"},
+          top: "5%",
+          left: "26%",
           zIndex: 5,
         }}
       />
@@ -108,11 +123,11 @@ export default function LeftPanel() {
         variant="body2"
         sx={{
           position: "absolute",
-          top: "93%",
-          left: "24%",
-          width: "60%",
+          top: { xs: "84%", md:"93%"},
+          left: { xs: "11%", md:"24%"},
+          width: { xs: "75%", md:"60%"},
           color: "white",
-          fontSize: "0.9rem",
+          fontSize: { xs: "1rem", md:"0.9rem"},
           fontWeight: 300,
           textAlign: "center",
           zIndex: 6,
