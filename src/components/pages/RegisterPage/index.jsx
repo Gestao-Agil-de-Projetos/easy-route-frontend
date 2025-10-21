@@ -58,7 +58,9 @@ export default function RegisterPage() {
           sx={{
             width: "100%",
             maxWidth: 400,
-            mt: { xs: 2, sm: 0 },
+            mt: { xs: 2 },
+            pt: { sm: 8 },
+            pb: { sm: 5 },
           }}
         >
           <RouteRegisterForm handleLoginClick={handleLoginClick} />

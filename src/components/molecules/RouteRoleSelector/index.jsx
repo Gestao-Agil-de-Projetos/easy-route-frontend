@@ -36,8 +36,8 @@ export default function RouteRoleSelector({
         },
       }}
     >
-      <ToggleButton value="passageiro">{passengerLabel}</ToggleButton>
-      <ToggleButton value="motorista">{driverLabel}</ToggleButton>
+      <ToggleButton value="PASSENGER">{passengerLabel}</ToggleButton>
+      <ToggleButton value="OWNER">{driverLabel}</ToggleButton>
     </ToggleButtonGroup>
   );
 }
