@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { TextField, InputAdornment } from "@mui/material";
-import EyeToggle from "../EyeToggle/index.jsx";
+import EyeToggle from "../RouteEyeToggle";
+import { theme } from "../../../conf/theme";
 
-export default function InputField({
+export default function RouteInputField({
   label,
   type,
   placeholder,
@@ -19,8 +20,13 @@ export default function InputField({
       placeholder={placeholder}
       value={value}
       onChange={onChange}
+      variant="outlined"
       fullWidth
-      margin="normal"
+      sx={{
+        "& .MuiInputBase-root": {
+          fontSize: { xs: "14px", sm: "16px" },
+        },
+      }}
       InputProps={{
         endAdornment: isPassword ? (
           <InputAdornment position="end">

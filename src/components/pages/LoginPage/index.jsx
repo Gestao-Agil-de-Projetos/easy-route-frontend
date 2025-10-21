@@ -1,50 +1,51 @@
 import React from "react";
 import { Grid, Box } from "@mui/material";
-import LeftPanel from "../../organisms/LeftPanel/index.jsx";
-import LoginForm from "../../molecules/LoginForm/index.jsx";
+import RouteLeftPanel from "../../organisms/RouteLeftPanel";
+import RouteLoginForm from "../../molecules/RouteLoginForm";
 import { useNavigate } from "react-router-dom";
+import { theme } from "../../../conf/theme";
 
 export default function LoginPage() {
   const navigate = useNavigate();
 
-  // Função que leva para a tela de registro
-  const handleRegisterClick = () => {
-    navigate("/register");
-  };
+  const handleRegisterClick = () => navigate("/register");
 
   return (
     <Grid
       container
       sx={{
+        width: "100vw",
         height: "100vh",
+        overflowX: "hidden",
         flexDirection: { xs: "column", md: "row" },
       }}
     >
-      {/* Painel esquerdo */}
       <Grid
         sx={{
-          flexBasis: { xs: "100%", md: "50%" },
-          flexShrink: 0,
-          backgroundColor: { xs: "#ffffffff", md: "#2563EB" },
+          width: { xs: "100%", md: "50%" },
+          height: { xs: "40vh", md: "100vh" },
+          backgroundColor: {
+            xs: theme.palette.primary.contrastText,
+            md: theme.palette.primary.main,
+          },
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: { xs: "50%", md: "100%" },
         }}
       >
-        <LeftPanel />
+        <RouteLeftPanel />
       </Grid>
 
-      {/* Painel direito */}
       <Grid
         sx={{
-          flexBasis: { xs: "100%", md: "50%" },
+          width: { xs: "100%", md: "50%" },
+          height: { xs: "60vh", md: "100vh" },
           display: "flex",
-          alignItems: { xs: "flex-start", md: "center" },
+          alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#F9FAFB",
-          px: { xs: 3, md: 0 },
-          py: { xs: 48, md: 0 },
+          backgroundColor: theme.palette.background.default,
+          px: { xs: 4, sm: 6, md: 0 },
+          py: { xs: 8, sm: 10, md: 0 },
         }}
       >
         <Box
@@ -53,8 +54,7 @@ export default function LoginPage() {
             maxWidth: 400,
           }}
         >
-          {/* Passa a função para o LoginForm */}
-          <LoginForm onRegisterClick={handleRegisterClick} />
+          <RouteLoginForm onRegisterClick={handleRegisterClick} />
         </Box>
       </Grid>
     </Grid>
