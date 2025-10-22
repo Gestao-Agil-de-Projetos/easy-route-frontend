@@ -127,15 +127,6 @@ export default function RouteRegisterForm() {
                     label={field.label}
                     type={field.type || "text"}
                   />
-                  <ErrorMessage
-                    name={field.name}
-                    component="div"
-                    style={{
-                      color: "red",
-                      fontSize: "0.85rem",
-                      marginTop: "4px",
-                    }}
-                  />
                 </Box>
               ))}
             </Box>

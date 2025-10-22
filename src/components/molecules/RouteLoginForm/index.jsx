@@ -8,6 +8,7 @@ import RouteButton from "../../atoms/RouteButton";
 import RouteText from "../../atoms/RouteText";
 import { theme } from "../../../conf/theme";
 import { loginSchema } from "../../../validation/auth-validation.js";
+import { jwtDecode } from "jwt-decode";
 
 export default function RouteLoginForm() {
   const { loginUser } = useAuth();
@@ -20,11 +21,15 @@ export default function RouteLoginForm() {
       onSubmit={async (values, { setSubmitting }) => {
         try {
           const data = await login(values.email, values.password);
-          loginUser(data.user, data.token);
 
-          if (data.user.role === "PASSENGER") {
+          loginUser(data.token);
+
+          const decoded = jwtDecode(data.token);
+          console.log("Decoded token:", decoded);
+
+          if (decoded.role === "PASSENGER") {
             navigate("/home");
-          } else if (data.user.role === "OWNER") {
+          } else if (decoded.role === "OWNER") {
             navigate("/owner");
           } else {
             navigate("/");
@@ -85,11 +90,6 @@ export default function RouteLoginForm() {
 
             <Box sx={{ width: "100%" }}>
               <Field name="email" component={RouteInputField} label="Email" />
-              <ErrorMessage
-                name="email"
-                component="div"
-                style={{ color: "red", fontSize: "0.85rem", marginTop: "4px" }}
-              />
             </Box>
 
             <Box sx={{ width: "100%" }}>
@@ -98,11 +98,6 @@ export default function RouteLoginForm() {
                 component={RouteInputField}
                 label="Senha"
                 type="password"
-              />
-              <ErrorMessage
-                name="password"
-                component="div"
-                style={{ color: "red", fontSize: "0.85rem", marginTop: "4px" }}
               />
             </Box>
 
