@@ -1,95 +1,125 @@
-import React from "react";
-import RouteButton from "../../atoms/RouteButton";
-import RouteInputField from "../../atoms/RouteInputField";
-import RouteText from "../../atoms/RouteText";
-import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { Box } from "@mui/material";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { login } from "../../../api/auth.js";
+import { useAuth } from "../../../hooks/useAuth";
+import RouteInputField from "../../atoms/RouteInputField";
+import RouteButton from "../../atoms/RouteButton";
+import RouteText from "../../atoms/RouteText";
 import { theme } from "../../../conf/theme";
+import { loginSchema } from "../../../validation/auth-validation.js";
+import { jwtDecode } from "jwt-decode";
 
 export default function RouteLoginForm() {
+  const { loginUser } = useAuth();
   const navigate = useNavigate();
 
-  const handleRegisterClick = () => {
-    navigate("/register");
-  };
-
   return (
-    <Box
-      sx={{
-        width: "100%",
-        maxWidth: { xs: "90%", sm: theme.sizes.form.maxWidth },
-        mx: "auto",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        backgroundColor: "transparent",
-        gap: 2.5,
+    <Formik
+      initialValues={{ email: "", password: "" }}
+      validationSchema={loginSchema}
+      onSubmit={async (values, { setSubmitting }) => {
+        try {
+          const data = await login(values.email, values.password);
+
+          loginUser(data.token);
+
+          const decoded = jwtDecode(data.token);
+          console.log("Decoded token:", decoded);
+
+          if (decoded.role === "PASSENGER") {
+            navigate("/home");
+          } else if (decoded.role === "OWNER") {
+            navigate("/owner");
+          } else {
+            navigate("/");
+          }
+        } catch (err) {
+          alert(
+            "Erro ao entrar: " + (err.response?.data?.message || err.message)
+          );
+        } finally {
+          setSubmitting(false);
+        }
       }}
     >
-      <RouteText
-        text="Bem-vindo!"
-        variant="h5"
-        sx={{
-          position: "static",
-          fontWeight: theme.typography.h5.fontWeight,
-          color: theme.palette.text.primary,
-          textAlign: "center",
-        }}
-      />
-
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-      >
-        <RouteText
-          variant="body2"
-          sx={{ color: theme.palette.text.secondary, position: "static" }}
-        >
-          Não tem uma conta?{" "}
+      {({ isSubmitting }) => (
+        <Form>
           <Box
-            component="span"
-            onClick={handleRegisterClick}
             sx={{
-              color: theme.palette.text.link,
-              fontWeight: 600,
-              cursor: "pointer",
-              "&:hover": { textDecoration: "underline" },
+              width: "100%",
+              maxWidth: { xs: "90%", sm: theme.sizes.form.maxWidth },
+              mx: "auto",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 2.5,
             }}
           >
-            Cadastre-se
+            <RouteText
+              text="Bem-vindo!"
+              variant="h5"
+              sx={{ fontWeight: 700, textAlign: "center" }}
+            />
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <RouteText
+                variant="body2"
+                sx={{ color: theme.palette.text.secondary }}
+              >
+                Não tem uma conta?{" "}
+                <Box
+                  component="span"
+                  onClick={() => navigate("/register")}
+                  sx={{
+                    color: theme.palette.text.link,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    "&:hover": { textDecoration: "underline" },
+                  }}
+                >
+                  Cadastre-se
+                </Box>
+              </RouteText>
+            </Box>
+
+            <Box sx={{ width: "100%" }}>
+              <Field name="email" component={RouteInputField} label="Email" />
+            </Box>
+
+            <Box sx={{ width: "100%" }}>
+              <Field
+                name="password"
+                component={RouteInputField}
+                label="Senha"
+                type="password"
+              />
+            </Box>
+
+            <RouteButton
+              variant="contained"
+              fullWidth
+              type="submit"
+              disabled={isSubmitting}
+              sx={{
+                mt: 1,
+                height: theme.sizes.button.medium.height,
+                borderRadius: theme.shape.borderRadius,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                background: theme.palette.primary.gradient,
+              }}
+            >
+              {isSubmitting ? "Entrando..." : "Entrar"}
+            </RouteButton>
           </Box>
-        </RouteText>
-      </Box>
-
-      <RouteInputField label="Email" placeholder="Escreva seu email completo" />
-
-      <RouteInputField
-        label="Senha"
-        placeholder="Digite uma senha"
-        type="password"
-      />
-
-      <RouteButton
-        variant="contained"
-        fullWidth
-        sx={{
-          mt: 1,
-          height: theme.sizes.button.medium.height,
-          borderRadius: theme.shape.borderRadius,
-          textTransform: theme.typography.button.textTransform,
-          fontSize: "1.1rem",
-          fontWeight: 700,
-          background: theme.palette.primary.gradient,
-          "&:hover": {
-            background: `linear-gradient(90deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`,
-          },
-        }}
-      >
-        Entrar
-      </RouteButton>
-    </Box>
+        </Form>
+      )}
+    </Formik>
   );
 }

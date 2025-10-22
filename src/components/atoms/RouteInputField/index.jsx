@@ -4,24 +4,29 @@ import EyeToggle from "../RouteEyeToggle";
 import { theme } from "../../../conf/theme";
 
 export default function RouteInputField({
+  field,
+  form,
   label,
   type,
   placeholder,
-  value,
-  onChange,
+  ...props
 }) {
   const [visible, setVisible] = useState(false);
   const isPassword = type === "password";
+  const error = form.touched[field.name] && Boolean(form.errors[field.name]);
+  const helperText = form.touched[field.name] && form.errors[field.name];
 
   return (
     <TextField
+      {...field}
+      {...props}
       label={label}
       type={isPassword && !visible ? "password" : "text"}
       placeholder={placeholder}
-      value={value}
-      onChange={onChange}
       variant="outlined"
       fullWidth
+      error={error}
+      helperText={helperText}
       sx={{
         "& .MuiInputBase-root": {
           fontSize: { xs: "14px", sm: "16px" },
