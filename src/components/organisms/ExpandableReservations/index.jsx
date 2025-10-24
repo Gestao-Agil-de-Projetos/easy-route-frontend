@@ -1,0 +1,361 @@
+import { Box, Typography, Collapse, IconButton } from '@mui/material';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import ReservationCard from '../../molecules/ReservationCard';
+import HistoryCard from '../../molecules/HistoryCard';
+import ViewReviewDialog from '../../molecules/ViewReviewDialog';
+import StarRating from '../../atoms/StarRating';
+import ReviewPromptDialog from '../../molecules/ReviewPromptDialog';
+import ReviewDialog from '../../molecules/ReviewDialog';
+import { useState } from 'react';
+
+const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, lastTrip, onReviewComplete }) => {
+  const [selectedTrip, setSelectedTrip] = useState(null);
+  const [showReviewDialog, setShowReviewDialog] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [showReviewTextDialog, setShowReviewTextDialog] = useState(false);
+
+  const handleHistoryClick = (trip) => {
+    if (trip.review) {
+      setSelectedTrip(trip);
+      setShowReviewDialog(true);
+    }
+  };
+
+  const handleCloseReviewDialog = () => {
+    setShowReviewDialog(false);
+    setSelectedTrip(null);
+  };
+
+  const handleRatingChange = (newRating) => {
+    setRating(newRating);
+    setShowPrompt(true);
+  };
+
+  const handlePromptAccept = () => {
+    setShowPrompt(false);
+    setShowReviewTextDialog(true);
+  };
+
+  const handlePromptDecline = () => {
+    setShowPrompt(false);
+    console.log('Review salvo (apenas nota):', { rating, text: '' });
+    onReviewComplete && onReviewComplete({ rating, text: '' });
+  };
+
+  const handleReviewSubmit = (review) => {
+    setShowReviewTextDialog(false);
+    console.log('Review completo salvo:', review);
+    onReviewComplete && onReviewComplete(review);
+  };
+
+  return (
+    <>
+      <Box
+        sx={{
+          width: '100%',
+        }}
+      >
+        {/* Toggle Bar */}
+        <Box
+          onClick={onToggle}
+          sx={{
+            backgroundColor: 'rgba(255, 255, 255, 0.85)',
+            border: '1px solid rgba(255, 255, 255, 0.3)',
+            backdropFilter: 'blur(5px)',
+            borderRadius: '12px',
+            padding: { xs: '10px 16px', sm: '12px 20px' },
+            marginTop: '12px',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            boxShadow: '0px 4px 6px -4px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1)',
+            transition: 'all 0.2s',
+            '&:hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.95)',
+              transform: 'translateY(-2px)',
+              boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.15)',
+            },
+          }}
+        >
+          <Typography sx={{ fontWeight: 600, fontSize: { xs: '14px', sm: '16px' }, color: '#1F2937' }}>
+            Minhas Viagens
+          </Typography>
+          <IconButton size="small" sx={{ padding: { xs: '4px', sm: '8px' } }}>
+            {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          </IconButton>
+        </Box>
+
+        {/* Last Trip Review - Static Container */}
+        {lastTrip && (
+          <Box
+            sx={{
+              backgroundColor: 'rgba(255, 255, 255, 0.85)',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              boxShadow: '0px 4px 6px -4px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1)',
+              backdropFilter: 'blur(5px)',
+              borderRadius: '16px',
+              padding: { xs: '16px', sm: '20px', md: '24px' },
+              marginTop: '8px',
+              position: 'relative',
+            }}
+          >
+            {/* Title */}
+            <Typography
+              sx={{
+                fontFamily: 'Inter',
+                fontWeight: 600,
+                fontSize: '16px',
+                lineHeight: '24px',
+                color: '#1F2937',
+                marginBottom: { xs: 2, sm: 2.5 },
+              }}
+            >
+              Sua Última Viagem
+            </Typography>
+
+            {/* Trip Route */}
+            <Box sx={{ marginBottom: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, marginBottom: 0.5 }}>
+                <Typography 
+                  sx={{ 
+                    fontFamily: 'Inter',
+                    fontWeight: 700, 
+                    fontSize: '20px', 
+                    lineHeight: '28px',
+                    color: '#1F2937',
+                  }}
+                >
+                  {lastTrip.from}
+                </Typography>
+                <Typography sx={{ color: '#9CA3AF', fontSize: '18px' }}>→</Typography>
+                <Typography 
+                  sx={{ 
+                    fontFamily: 'Inter',
+                    fontWeight: 700, 
+                    fontSize: '20px',
+                    lineHeight: '28px', 
+                    color: '#1F2937',
+                  }}
+                >
+                  {lastTrip.to}
+                </Typography>
+              </Box>
+
+              {/* Distance and Duration */}
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                <Typography sx={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', lineHeight: '20px', color: '#4B5563' }}>
+                  69
+                </Typography>
+                <Typography sx={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', lineHeight: '20px', color: '#6B7280' }}>
+                  Km
+                </Typography>
+                <Typography sx={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', lineHeight: '20px', color: '#4B5563' }}>
+                  ~1h06
+                </Typography>
+              </Box>
+            </Box>
+
+            {/* Star Rating - Top Right */}
+            <Box 
+              sx={{ 
+                position: 'absolute',
+                top: { xs: '20px', sm: '24px', md: '27px' },
+                right: { xs: '16px', sm: '20px', md: '24px' },
+                display: 'flex',
+                gap: 0.5,
+              }}
+            >
+              <StarRating rating={rating} onRate={handleRatingChange} size={24} />
+            </Box>
+
+            {/* Bottom Section with border */}
+            <Box
+              sx={{
+                marginTop: { xs: 2, sm: 3 },
+                paddingTop: { xs: 2, sm: 3 },
+                borderTop: '1px solid rgba(209, 213, 219, 0.6)',
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                gap: 2,
+                justifyContent: 'space-between',
+              }}
+            >
+              {/* Left Side - Date and Price */}
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+                <Typography sx={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', lineHeight: '20px', color: '#6B7280' }}>
+                  {lastTrip.date}
+                </Typography>
+                <Typography sx={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '16px', lineHeight: '24px', color: '#1F2937' }}>
+                  {lastTrip.price}
+                </Typography>
+                <Box
+                  sx={{
+                    padding: '2px 8px',
+                    backgroundColor: '#DBEAFE',
+                    borderRadius: '9999px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography sx={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '12px', lineHeight: '16px', color: '#1D4ED8' }}>
+                    PIX
+                  </Typography>
+                </Box>
+              </Box>
+
+              {/* Right Side - Driver Button */}
+              <Box
+                sx={{
+                  padding: '6px 12px',
+                  backgroundColor: '#3B82F6',
+                  borderRadius: '9999px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                }}
+              >
+                <Typography sx={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '14px', lineHeight: '20px', color: '#FFFFFF' }}>
+                  {lastTrip.driver}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        )}
+
+        {/* Expandable Content */}
+        <Collapse in={isExpanded}>
+          <Box
+            sx={{
+              backgroundColor: 'rgba(255, 255, 255, 0.85)',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              backdropFilter: 'blur(5px)',
+              borderRadius: '12px',
+              padding: { xs: '16px', sm: '20px', md: '24px' },
+              marginTop: '8px',
+              boxShadow: '0px 4px 6px -4px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            {/* Content */}
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+                gap: { xs: 2, sm: 3 },
+              }}
+            >
+              {/* Reservas */}
+              <Box>
+                <Typography sx={{ fontWeight: 600, fontSize: '14px', color: '#6B7280', marginBottom: 1.5 }}>
+                  Reservas
+                </Typography>
+                <Box
+                  sx={{
+                    maxHeight: '300px',
+                    overflowY: 'auto',
+                    paddingRight: '8px',
+                    '&::-webkit-scrollbar': {
+                      width: '4px',
+                    },
+                    '&::-webkit-scrollbar-track': {
+                      background: 'transparent',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                      background: '#D1D5DB',
+                      borderRadius: '4px',
+                    },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                    {reservations.map((reservation, index) => (
+                      <ReservationCard key={index} {...reservation} />
+                    ))}
+                    {reservations.length === 0 && (
+                      <Box sx={{ padding: '48px 24px', textAlign: 'center' }}>
+                        <Typography sx={{ color: '#9CA3AF', fontSize: '14px' }}>
+                          Você não tem reservas ativas
+                        </Typography>
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+
+              {/* Histórico */}
+              <Box>
+                <Typography sx={{ fontWeight: 600, fontSize: '14px', color: '#6B7280', marginBottom: 1.5 }}>
+                  Histórico
+                </Typography>
+                <Box
+                  sx={{
+                    maxHeight: '300px',
+                    overflowY: 'auto',
+                    paddingRight: '8px',
+                    '&::-webkit-scrollbar': {
+                      width: '4px',
+                    },
+                    '&::-webkit-scrollbar-track': {
+                      background: 'transparent',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                      background: '#D1D5DB',
+                      borderRadius: '4px',
+                    },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                    {history.map((item, index) => (
+                      <HistoryCard key={index} {...item} onClick={() => handleHistoryClick(item)} />
+                    ))}
+                    {history.length === 0 && (
+                      <Box sx={{ padding: '48px 24px', textAlign: 'center' }}>
+                        <Typography sx={{ color: '#9CA3AF', fontSize: '14px' }}>
+                          Você não tem viagens no histórico
+                        </Typography>
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </Collapse>
+      </Box>
+
+      {/* Review Dialogs */}
+      <ReviewPromptDialog
+        open={showPrompt}
+        onClose={handlePromptDecline}
+        onAccept={handlePromptAccept}
+        onDecline={handlePromptDecline}
+      />
+
+      <ReviewDialog
+        open={showReviewTextDialog}
+        onClose={() => setShowReviewTextDialog(false)}
+        rating={rating}
+        tripInfo={lastTrip}
+        onSubmit={handleReviewSubmit}
+      />
+
+      {/* View Review Dialog */}
+      {selectedTrip && (
+        <ViewReviewDialog
+          open={showReviewDialog}
+          onClose={handleCloseReviewDialog}
+          review={selectedTrip.review}
+          tripInfo={{
+            from: selectedTrip.from,
+            to: selectedTrip.to,
+            date: selectedTrip.date,
+            price: selectedTrip.price,
+          }}
+        />
+      )}
+    </>
+  );
+};
+
+export default ExpandableReservations;
