@@ -1,6 +1,7 @@
-import { Box, Typography, Button, Collapse } from '@mui/material';
+import { Box, Button, Collapse } from '@mui/material';
 import { User, MapPin } from 'lucide-react';
 import { useState } from 'react';
+import RouteText from '../../atoms/RouteText';
 
 const TripSearchCard = ({ from, to, distance, duration, driver, seats, date, time, price, onBook }) => {
   const [expanded, setExpanded] = useState(false);
@@ -22,7 +23,7 @@ const TripSearchCard = ({ from, to, distance, duration, driver, seats, date, tim
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <Box sx={{ flex: 1 }}>
-          <Typography
+          <RouteText
             sx={{
               fontWeight: 600,
               fontSize: '18px',
@@ -32,26 +33,26 @@ const TripSearchCard = ({ from, to, distance, duration, driver, seats, date, tim
             }}
           >
             {from} → {to}
-          </Typography>
+          </RouteText>
           <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
-            <Typography sx={{ fontSize: '14px', color: '#6B7280' }}>
+            <RouteText sx={{ fontSize: '14px', color: '#6B7280' }}>
               <MapPin size={16} style={{ display: 'inline', marginRight: '4px' }} />
               {distance}
-            </Typography>
-            <Typography sx={{ fontSize: '14px', color: '#6B7280' }}>
+            </RouteText>
+            <RouteText sx={{ fontSize: '14px', color: '#6B7280' }}>
               ⏱️ {duration}
-            </Typography>
-            <Typography sx={{ fontSize: '14px', color: '#6B7280' }}>
+            </RouteText>
+            <RouteText sx={{ fontSize: '14px', color: '#6B7280' }}>
               <User size={16} style={{ display: 'inline', marginRight: '4px' }} />
               {seats} vagas
-            </Typography>
+            </RouteText>
           </Box>
-          <Typography sx={{ fontSize: '12px', color: '#9CA3AF', marginTop: '4px' }}>
+          <RouteText sx={{ fontSize: '12px', color: '#9CA3AF', marginTop: '4px' }}>
             {date} - {time}
-          </Typography>
+          </RouteText>
         </Box>
         <Box sx={{ textAlign: 'right' }}>
-          <Typography
+          <RouteText
             sx={{
               fontWeight: 700,
               fontSize: '20px',
@@ -60,10 +61,10 @@ const TripSearchCard = ({ from, to, distance, duration, driver, seats, date, tim
             }}
           >
             {price}
-          </Typography>
-          <Typography sx={{ fontSize: '12px', color: '#6B7280' }}>
+          </RouteText>
+          <RouteText sx={{ fontSize: '12px', color: '#6B7280' }}>
             Motorista: {driver}
-          </Typography>
+          </RouteText>
         </Box>
       </Box>
 

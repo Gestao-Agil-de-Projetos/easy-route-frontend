@@ -1,7 +1,8 @@
-import { Box, Typography, Menu, MenuItem } from '@mui/material';
+import { Box, Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MenuButton from '../../atoms/MenuButton';
+import RouteText from '../../atoms/RouteText';
 import { MapIcon } from 'lucide-react';
 
 const Header = ({ onLogoClick }) => {
@@ -44,6 +45,7 @@ const Header = ({ onLogoClick }) => {
         zIndex: 100,
         backgroundColor: 'transparent',
         overflow: 'visible',
+        boxSizing: 'border-box',
       }}
     >
       {/* Logo */}
@@ -78,7 +80,7 @@ const Header = ({ onLogoClick }) => {
         >
           <MapIcon size={20} color="white" />
         </Box>
-        <Typography
+        <RouteText
           sx={{
             fontWeight: 700,
             fontSize: '20px',
@@ -88,7 +90,7 @@ const Header = ({ onLogoClick }) => {
           }}
         >
           Rota Fácil
-        </Typography>
+        </RouteText>
       </Box>
 
       {/* Right Side Buttons */}
@@ -102,14 +104,24 @@ const Header = ({ onLogoClick }) => {
         PaperProps={{
           sx: {
             marginTop: '8px',
+            marginRight: { xs: '0px', sm: '0px' },
+            marginLeft: { xs: '-12px', sm: '-16px' },
             backgroundColor: '#FFFFFF',
             boxShadow: '0px 8px 10px -6px rgba(0, 0, 0, 0.1), 0px 20px 25px -5px rgba(0, 0, 0, 0.1)',
             borderRadius: '8px',
             minWidth: '200px',
+            maxWidth: '90vw',
           },
         }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+        slotProps={{
+          paper: {
+            style: {
+              position: 'fixed',
+            },
+          },
+        }}
       >
         {menuItems.map((item) => (
           <MenuItem
@@ -133,7 +145,6 @@ const Header = ({ onLogoClick }) => {
         ))}
         <MenuItem
           onClick={() => {
-            // Handle logout
             handleMenuClose();
           }}
           sx={{

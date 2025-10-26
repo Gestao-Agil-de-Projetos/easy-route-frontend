@@ -50,13 +50,11 @@ const SearchSection = ({ onSearchChange, availableTrips, onTripSelect }) => {
           const { latitude, longitude } = position.coords;
           
           try {
-            // Usando Nominatim (OpenStreetMap) para geocodificação reversa
             const response = await fetch(
               `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=pt-BR`
             );
             const data = await response.json();
             
-            // Pega a cidade do resultado
             const city = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality || 'Local atual';
             
             setFromValue(city);

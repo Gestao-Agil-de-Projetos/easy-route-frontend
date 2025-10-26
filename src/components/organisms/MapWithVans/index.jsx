@@ -4,7 +4,7 @@ import VanMarker from '../../atoms/VanMarker';
 import RoutePolyline from '../../molecules/RoutePolyline';
 
 const MapWithVans = ({ userLocation, vans, selectedTrip, onVanClick }) => {
-  const [mapCenter, setMapCenter] = useState(userLocation || [-14.8631, -40.8444]); // Default: Vitória da Conquista
+  const [mapCenter, setMapCenter] = useState(userLocation || [-14.8631, -40.8444]);
 
   useEffect(() => {
     if (userLocation) {
@@ -12,13 +12,11 @@ const MapWithVans = ({ userLocation, vans, selectedTrip, onVanClick }) => {
     }
   }, [userLocation]);
 
-  // Gera posições simuladas para as vans baseadas na região do usuário
   const getVanPosition = (van, index) => {
     if (van.position) {
       return van.position;
     }
     
-    // Simula posições próximas ao usuário (offset aleatório)
     const latOffset = (Math.random() - 0.5) * 0.1;
     const lngOffset = (Math.random() - 0.5) * 0.1;
     
@@ -28,11 +26,9 @@ const MapWithVans = ({ userLocation, vans, selectedTrip, onVanClick }) => {
     ];
   };
 
-  // Calcula posições para a rota selecionada
   const getRouteCoordinates = (trip) => {
     if (!trip) return { start: null, end: null };
 
-    // Coordenadas reais das cidades
     const cityCoordinates = {
       'BRUMADO': [-14.2031, -41.6656],
       'VCA': [-14.8631, -40.8444],

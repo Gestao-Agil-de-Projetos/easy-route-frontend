@@ -1,4 +1,4 @@
-import { Box, Typography, Collapse, IconButton } from '@mui/material';
+import { Box, Collapse, IconButton } from '@mui/material';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import ReservationCard from '../../molecules/ReservationCard';
 import HistoryCard from '../../molecules/HistoryCard';
@@ -6,6 +6,7 @@ import ViewReviewDialog from '../../molecules/ViewReviewDialog';
 import StarRating from '../../atoms/StarRating';
 import ReviewPromptDialog from '../../molecules/ReviewPromptDialog';
 import ReviewDialog from '../../molecules/ReviewDialog';
+import RouteText from '../../atoms/RouteText';
 import { useState } from 'react';
 
 const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, lastTrip, onReviewComplete }) => {
@@ -79,9 +80,9 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
             },
           }}
         >
-          <Typography sx={{ fontWeight: 600, fontSize: { xs: '14px', sm: '16px' }, color: '#1F2937' }}>
+          <RouteText sx={{ fontWeight: 600, fontSize: { xs: '14px', sm: '16px' }, color: '#1F2937' }}>
             Minhas Viagens
-          </Typography>
+          </RouteText>
           <IconButton size="small" sx={{ padding: { xs: '4px', sm: '8px' } }}>
             {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
           </IconButton>
@@ -101,8 +102,7 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
               position: 'relative',
             }}
           >
-            {/* Title */}
-            <Typography
+            <RouteText
               sx={{
                 fontFamily: 'Inter',
                 fontWeight: 600,
@@ -113,12 +113,11 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
               }}
             >
               Sua Última Viagem
-            </Typography>
+            </RouteText>
 
-            {/* Trip Route */}
             <Box sx={{ marginBottom: 1 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, marginBottom: 0.5 }}>
-                <Typography 
+                <RouteText 
                   sx={{ 
                     fontFamily: 'Inter',
                     fontWeight: 700, 
@@ -128,9 +127,9 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
                   }}
                 >
                   {lastTrip.from}
-                </Typography>
-                <Typography sx={{ color: '#9CA3AF', fontSize: '18px' }}>→</Typography>
-                <Typography 
+                </RouteText>
+                <RouteText sx={{ color: '#9CA3AF', fontSize: '18px' }}>→</RouteText>
+                <RouteText 
                   sx={{ 
                     fontFamily: 'Inter',
                     fontWeight: 700, 
@@ -140,20 +139,19 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
                   }}
                 >
                   {lastTrip.to}
-                </Typography>
+                </RouteText>
               </Box>
 
-              {/* Distance and Duration */}
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Typography sx={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', lineHeight: '20px', color: '#4B5563' }}>
+                <RouteText sx={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', lineHeight: '20px', color: '#4B5563' }}>
                   69
-                </Typography>
-                <Typography sx={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', lineHeight: '20px', color: '#6B7280' }}>
+                </RouteText>
+                <RouteText sx={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', lineHeight: '20px', color: '#6B7280' }}>
                   Km
-                </Typography>
-                <Typography sx={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', lineHeight: '20px', color: '#4B5563' }}>
+                </RouteText>
+                <RouteText sx={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', lineHeight: '20px', color: '#4B5563' }}>
                   ~1h06
-                </Typography>
+                </RouteText>
               </Box>
             </Box>
 
@@ -183,14 +181,13 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
                 justifyContent: 'space-between',
               }}
             >
-              {/* Left Side - Date and Price */}
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
-                <Typography sx={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', lineHeight: '20px', color: '#6B7280' }}>
+                <RouteText sx={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', lineHeight: '20px', color: '#6B7280' }}>
                   {lastTrip.date}
-                </Typography>
-                <Typography sx={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '16px', lineHeight: '24px', color: '#1F2937' }}>
+                </RouteText>
+                <RouteText sx={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '16px', lineHeight: '24px', color: '#1F2937' }}>
                   {lastTrip.price}
-                </Typography>
+                </RouteText>
                 <Box
                   sx={{
                     padding: '2px 8px',
@@ -200,13 +197,12 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
                     alignItems: 'center',
                   }}
                 >
-                  <Typography sx={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '12px', lineHeight: '16px', color: '#1D4ED8' }}>
+                  <RouteText sx={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '12px', lineHeight: '16px', color: '#1D4ED8' }}>
                     PIX
-                  </Typography>
+                  </RouteText>
                 </Box>
               </Box>
 
-              {/* Right Side - Driver Button */}
               <Box
                 sx={{
                   padding: '6px 12px',
@@ -217,9 +213,9 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
                   gap: 1,
                 }}
               >
-                <Typography sx={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '14px', lineHeight: '20px', color: '#FFFFFF' }}>
+                <RouteText sx={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '14px', lineHeight: '20px', color: '#FFFFFF' }}>
                   {lastTrip.driver}
-                </Typography>
+                </RouteText>
               </Box>
             </Box>
           </Box>
@@ -246,11 +242,10 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
                 gap: { xs: 2, sm: 3 },
               }}
             >
-              {/* Reservas */}
               <Box>
-                <Typography sx={{ fontWeight: 600, fontSize: '14px', color: '#6B7280', marginBottom: 1.5 }}>
+                <RouteText sx={{ fontWeight: 600, fontSize: '14px', color: '#6B7280', marginBottom: 1.5 }}>
                   Reservas
-                </Typography>
+                </RouteText>
                 <Box
                   sx={{
                     maxHeight: '300px',
@@ -274,20 +269,19 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
                     ))}
                     {reservations.length === 0 && (
                       <Box sx={{ padding: '48px 24px', textAlign: 'center' }}>
-                        <Typography sx={{ color: '#9CA3AF', fontSize: '14px' }}>
+                        <RouteText sx={{ color: '#9CA3AF', fontSize: '14px' }}>
                           Você não tem reservas ativas
-                        </Typography>
+                        </RouteText>
                       </Box>
                     )}
                   </Box>
                 </Box>
               </Box>
 
-              {/* Histórico */}
               <Box>
-                <Typography sx={{ fontWeight: 600, fontSize: '14px', color: '#6B7280', marginBottom: 1.5 }}>
+                <RouteText sx={{ fontWeight: 600, fontSize: '14px', color: '#6B7280', marginBottom: 1.5 }}>
                   Histórico
-                </Typography>
+                </RouteText>
                 <Box
                   sx={{
                     maxHeight: '300px',
@@ -311,9 +305,9 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
                     ))}
                     {history.length === 0 && (
                       <Box sx={{ padding: '48px 24px', textAlign: 'center' }}>
-                        <Typography sx={{ color: '#9CA3AF', fontSize: '14px' }}>
+                        <RouteText sx={{ color: '#9CA3AF', fontSize: '14px' }}>
                           Você não tem viagens no histórico
-                        </Typography>
+                        </RouteText>
                       </Box>
                     )}
                   </Box>

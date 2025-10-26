@@ -12,7 +12,6 @@ const RoutePolyline = ({ start, end, color = '#3B82F6' }) => {
       return;
     }
 
-    // Buscar rota real usando OpenRouteService API (gratuito)
     const fetchRoute = async () => {
       try {
         const response = await fetch(
@@ -22,17 +21,14 @@ const RoutePolyline = ({ start, end, color = '#3B82F6' }) => {
         
         if (data.routes && data.routes.length > 0) {
           const coords = data.routes[0].geometry.coordinates;
-          // Converter de [lng, lat] para [lat, lng]
           const positions = coords.map(coord => [coord[1], coord[0]]);
           setRoutePositions(positions);
           
-          // Ajusta o zoom para mostrar toda a rota
           const bounds = L.latLngBounds(positions);
           map.fitBounds(bounds, { padding: [100, 100] });
         }
       } catch (error) {
         console.error('Erro ao buscar rota:', error);
-        // Fallback: linha reta
         setRoutePositions([start, end]);
         const bounds = L.latLngBounds([start, end]);
         map.fitBounds(bounds, { padding: [50, 50] });

@@ -1,5 +1,6 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import PriceBadge from '../../atoms/PriceBadge';
+import RouteText from '../../atoms/RouteText';
 
 const HistoryCard = ({ from, to, date, price, onClick }) => {
   return (
@@ -21,7 +22,7 @@ const HistoryCard = ({ from, to, date, price, onClick }) => {
       }}
     >
       <Box>
-        <Typography
+        <RouteText
           sx={{
             fontWeight: 500,
             fontSize: '16px',
@@ -31,8 +32,8 @@ const HistoryCard = ({ from, to, date, price, onClick }) => {
           }}
         >
           {from} → {to}
-        </Typography>
-        <Typography
+        </RouteText>
+        <RouteText
           sx={{
             fontWeight: 400,
             fontSize: '12px',
@@ -41,7 +42,7 @@ const HistoryCard = ({ from, to, date, price, onClick }) => {
           }}
         >
           Finalizada - {date}
-        </Typography>
+        </RouteText>
       </Box>
       <PriceBadge price={price} />
     </Box>

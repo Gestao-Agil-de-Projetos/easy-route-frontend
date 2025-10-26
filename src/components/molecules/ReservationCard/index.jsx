@@ -1,5 +1,6 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import TimeBadge from '../../atoms/TimeBadge';
+import RouteText from '../../atoms/RouteText';
 
 const ReservationCard = ({ from, to, time, date, timeBadge, variant = 'red' }) => {
   return (
@@ -20,7 +21,7 @@ const ReservationCard = ({ from, to, time, date, timeBadge, variant = 'red' }) =
       }}
     >
       <Box>
-        <Typography
+        <RouteText
           sx={{
             fontWeight: 500,
             fontSize: '16px',
@@ -30,8 +31,8 @@ const ReservationCard = ({ from, to, time, date, timeBadge, variant = 'red' }) =
           }}
         >
           {from} → {to}
-        </Typography>
-        <Typography
+        </RouteText>
+        <RouteText
           sx={{
             fontWeight: 400,
             fontSize: '12px',
@@ -40,9 +41,9 @@ const ReservationCard = ({ from, to, time, date, timeBadge, variant = 'red' }) =
           }}
         >
           {date} - {time}
-        </Typography>
+        </RouteText>
       </Box>
-      <TimeBadge time={timeBadge} variant={variant} />
+      <TimeBadge time={time} date={date} />
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import blob1 from "../../../assets/blob1.png";
 import blob2 from "../../../assets/blob2.png";
 import blob3 from "../../../assets/blob3.png";

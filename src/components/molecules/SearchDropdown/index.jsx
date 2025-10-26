@@ -1,5 +1,6 @@
-import { Box, Typography, Paper, Divider } from '@mui/material';
+import { Box, Paper, Divider } from '@mui/material';
 import { Clock, MapPin, User } from 'lucide-react';
+import RouteText from '../../atoms/RouteText';
 
 const SearchDropdown = ({ trips, onTripSelect, isVisible }) => {
   if (!isVisible || !trips || trips.length === 0) {
@@ -48,36 +49,36 @@ const SearchDropdown = ({ trips, onTripSelect, isVisible }) => {
           >
             {/* Route */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
-              <Typography sx={{ fontWeight: 700, fontSize: '16px', color: '#1F2937' }}>
+              <RouteText sx={{ fontWeight: 700, fontSize: '16px', color: '#1F2937' }}>
                 {trip.from}
-              </Typography>
-              <Typography sx={{ color: '#9CA3AF' }}>→</Typography>
-              <Typography sx={{ fontWeight: 700, fontSize: '16px', color: '#1F2937' }}>
+              </RouteText>
+              <RouteText sx={{ color: '#9CA3AF' }}>→</RouteText>
+              <RouteText sx={{ fontWeight: 700, fontSize: '16px', color: '#1F2937' }}>
                 {trip.to}
-              </Typography>
+              </RouteText>
             </Box>
 
             {/* Details */}
             <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', alignItems: 'center' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                 <Clock size={14} color="#6B7280" />
-                <Typography sx={{ fontSize: '13px', color: '#6B7280' }}>
+                <RouteText sx={{ fontSize: '13px', color: '#6B7280' }}>
                   {trip.time}
-                </Typography>
+                </RouteText>
               </Box>
 
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                 <User size={14} color="#6B7280" />
-                <Typography sx={{ fontSize: '13px', color: '#6B7280' }}>
+                <RouteText sx={{ fontSize: '13px', color: '#6B7280' }}>
                   {trip.driver}
-                </Typography>
+                </RouteText>
               </Box>
 
-              <Typography sx={{ fontSize: '13px', color: '#6B7280' }}>
+              <RouteText sx={{ fontSize: '13px', color: '#6B7280' }}>
                 {trip.distance} · {trip.duration}
-              </Typography>
+              </RouteText>
 
-              <Typography
+              <RouteText
                 sx={{
                   marginLeft: 'auto',
                   fontWeight: 700,
@@ -86,13 +87,12 @@ const SearchDropdown = ({ trips, onTripSelect, isVisible }) => {
                 }}
               >
                 {trip.price}
-              </Typography>
+              </RouteText>
             </Box>
 
-            {/* Seats */}
-            <Typography sx={{ fontSize: '12px', color: '#9CA3AF', marginTop: 0.5 }}>
+            <RouteText sx={{ fontSize: '12px', color: '#9CA3AF', marginTop: 0.5 }}>
               {trip.seats} {trip.seats === 1 ? 'vaga disponível' : 'vagas disponíveis'}
-            </Typography>
+            </RouteText>
           </Box>
           {index < trips.length - 1 && <Divider />}
         </Box>

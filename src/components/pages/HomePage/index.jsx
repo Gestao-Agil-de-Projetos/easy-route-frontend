@@ -14,72 +14,68 @@ const HomePage = () => {
   const [reservationsExpanded, setReservationsExpanded] = useState(false);
   const [showLastTrip, setShowLastTrip] = useState(true);
 
-  // Mock data - última viagem para avaliar
   const lastTrip = {
     from: 'VCA',
     to: 'POÇÕES',
-    date: '03/10 - 22h',
+    date: '25/10 - 22h',
     driver: 'Pedro Tigre',
     price: 'R$ 25,40',
   };
 
-  // Mock data - reservas
   const reservations = [
     { from: 'VCA', to: 'POÇÕES', time: '14:00', date: 'Hoje', timeBadge: '2h', variant: 'red' },
     { from: 'BRUMADO', to: 'VCA', time: '08:00', date: 'Amanhã', timeBadge: '8h', variant: 'orange' },
-    { from: 'VCA', to: 'BARRA', time: '09:30', date: '15/10', timeBadge: '15/10', variant: 'yellow' },
+    { from: 'VCA', to: 'BARRA', time: '09:30', date: '28/10', timeBadge: '28/10', variant: 'yellow' },
     { from: 'POÇÕES', to: 'VITÓRIA DA CONQUISTA', time: '16:00', date: 'Hoje', timeBadge: '4h', variant: 'red' },
     { from: 'VCA', to: 'ITAPETINGA', time: '07:30', date: 'Amanhã', timeBadge: '10h', variant: 'orange' },
-    { from: 'BARRA', to: 'BRUMADO', time: '11:00', date: '16/10', timeBadge: '16/10', variant: 'yellow' },
+    { from: 'BARRA', to: 'BRUMADO', time: '11:00', date: '29/10', timeBadge: '29/10', variant: 'yellow' },
   ];
 
-  // Mock data - histórico
   const history = [
     { 
       from: 'VCA', 
       to: 'POÇÕES', 
-      date: '09/10', 
+      date: '22/10', 
       price: 'R$ 35,00',
       review: { rating: 5, text: 'Viagem excelente! Motorista pontual e educado.' }
     },
     { 
       from: 'BRUMADO', 
       to: 'VCA', 
-      date: '05/10', 
+      date: '20/10', 
       price: 'R$ 45,00',
       review: { rating: 4, text: '' }
     },
     { 
       from: 'VCA', 
       to: 'BARRA', 
-      date: '01/10', 
+      date: '18/10', 
       price: 'R$ 70,00',
       review: { rating: 3, text: 'Viagem ok, mas teve atraso.' }
     },
     { 
       from: 'ITAPETINGA', 
       to: 'VCA', 
-      date: '28/09', 
+      date: '15/10', 
       price: 'R$ 50,00',
       review: { rating: 5, text: 'Ótima viagem!' }
     },
     { 
       from: 'VCA', 
       to: 'POÇÕES', 
-      date: '25/09', 
+      date: '12/10', 
       price: 'R$ 35,00',
       review: { rating: 4, text: 'Muito bom' }
     },
     { 
       from: 'BARRA', 
       to: 'BRUMADO', 
-      date: '20/09', 
+      date: '10/10', 
       price: 'R$ 60,00',
       review: { rating: 5, text: 'Perfeito!' }
     },
   ];
 
-  // Mock data - viagens disponíveis
   const allTrips = [
     {
       id: 1,
@@ -135,7 +131,6 @@ const HomePage = () => {
     },
   ];
 
-  // Obter localização do usuário ao carregar
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -145,12 +140,10 @@ const HomePage = () => {
         },
         (error) => {
           console.error('Erro ao obter localização:', error);
-          // Fallback para Vitória da Conquista
           setUserLocation([-14.8631, -40.8444]);
         }
       );
     } else {
-      // Fallback para Vitória da Conquista
       setUserLocation([-14.8631, -40.8444]);
     }
   }, []);
@@ -158,7 +151,6 @@ const HomePage = () => {
   const handleSearchChange = (query) => {
     setSearchQuery(query);
 
-    // Filtrar viagens disponíveis
     const filtered = allTrips.filter((trip) => {
       const fromQuery = query?.from?.toLowerCase().trim() || '';
       const toQuery = query?.to?.toLowerCase().trim() || '';
@@ -199,7 +191,6 @@ const HomePage = () => {
     setShowLastTrip(false);
   };
 
-  // Determina quais vans mostrar no mapa
   const vansToShow = selectedTrip ? [] : (availableTrips.length > 0 ? availableTrips : allTrips);
 
   return (

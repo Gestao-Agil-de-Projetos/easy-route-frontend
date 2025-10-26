@@ -1,6 +1,7 @@
-import { Box, Typography, Button, Divider, Radio, RadioGroup, FormControlLabel } from '@mui/material';
+import { Box, Button, Divider, Radio, RadioGroup, FormControlLabel } from '@mui/material';
 import { User, Clock, MapPin, CreditCard, X, Users } from 'lucide-react';
 import { useState } from 'react';
+import RouteText from '../../atoms/RouteText';
 
 const TripConfirmationCard = ({ trip, onConfirm, onCancel }) => {
   const [paymentMethod, setPaymentMethod] = useState('pix');
@@ -54,8 +55,7 @@ const TripConfirmationCard = ({ trip, onConfirm, onCancel }) => {
         <X size={24} color="#6B7280" />
       </Box>
 
-      {/* Header */}
-      <Typography
+      <RouteText
         sx={{
           fontWeight: 700,
           fontSize: { xs: '20px', sm: '24px' },
@@ -65,9 +65,8 @@ const TripConfirmationCard = ({ trip, onConfirm, onCancel }) => {
         }}
       >
         Confirmar Viagem
-      </Typography>
+      </RouteText>
 
-      {/* Route */}
       <Box sx={{ marginBottom: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
           <Box
@@ -78,9 +77,9 @@ const TripConfirmationCard = ({ trip, onConfirm, onCancel }) => {
               backgroundColor: '#10B981',
             }}
           />
-          <Typography sx={{ fontWeight: 600, fontSize: '18px', color: '#1F2937' }}>
+          <RouteText sx={{ fontWeight: 600, fontSize: '18px', color: '#1F2937' }}>
             {trip.from}
-          </Typography>
+          </RouteText>
         </Box>
 
         <Box
@@ -100,60 +99,58 @@ const TripConfirmationCard = ({ trip, onConfirm, onCancel }) => {
               backgroundColor: '#EF4444',
             }}
           />
-          <Typography sx={{ fontWeight: 600, fontSize: '18px', color: '#1F2937' }}>
+          <RouteText sx={{ fontWeight: 600, fontSize: '18px', color: '#1F2937' }}>
             {trip.to}
-          </Typography>
+          </RouteText>
         </Box>
       </Box>
 
       <Divider sx={{ marginY: 3 }} />
 
-      {/* Trip Details */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, marginBottom: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <User size={20} color="#6B7280" />
           <Box>
-            <Typography sx={{ fontSize: '12px', color: '#9CA3AF' }}>Motorista</Typography>
-            <Typography sx={{ fontWeight: 600, fontSize: '16px', color: '#1F2937' }}>
+            <RouteText sx={{ fontSize: '12px', color: '#9CA3AF' }}>Motorista</RouteText>
+            <RouteText sx={{ fontWeight: 600, fontSize: '16px', color: '#1F2937' }}>
               {trip.driver}
-            </Typography>
+            </RouteText>
           </Box>
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Clock size={20} color="#6B7280" />
           <Box>
-            <Typography sx={{ fontSize: '12px', color: '#9CA3AF' }}>Horário</Typography>
-            <Typography sx={{ fontWeight: 600, fontSize: '16px', color: '#1F2937' }}>
+            <RouteText sx={{ fontSize: '12px', color: '#9CA3AF' }}>Horário</RouteText>
+            <RouteText sx={{ fontWeight: 600, fontSize: '16px', color: '#1F2937' }}>
               {trip.time} - {trip.date}
-            </Typography>
+            </RouteText>
           </Box>
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <MapPin size={20} color="#6B7280" />
           <Box>
-            <Typography sx={{ fontSize: '12px', color: '#9CA3AF' }}>Distância</Typography>
-            <Typography sx={{ fontWeight: 600, fontSize: '16px', color: '#1F2937' }}>
+            <RouteText sx={{ fontSize: '12px', color: '#9CA3AF' }}>Distância</RouteText>
+            <RouteText sx={{ fontWeight: 600, fontSize: '16px', color: '#1F2937' }}>
               {trip.distance} - {trip.duration}
-            </Typography>
+            </RouteText>
           </Box>
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Users size={20} color="#6B7280" />
           <Box>
-            <Typography sx={{ fontSize: '12px', color: '#9CA3AF' }}>Vagas Disponíveis</Typography>
-            <Typography sx={{ fontWeight: 600, fontSize: '16px', color: '#1F2937' }}>
+            <RouteText sx={{ fontSize: '12px', color: '#9CA3AF' }}>Vagas Disponíveis</RouteText>
+            <RouteText sx={{ fontWeight: 600, fontSize: '16px', color: '#1F2937' }}>
               {trip.seats || 3} vagas
-            </Typography>
+            </RouteText>
           </Box>
         </Box>
       </Box>
 
       <Divider sx={{ marginY: 3 }} />
 
-      {/* Price */}
       <Box
         sx={{
           display: 'flex',
@@ -162,17 +159,16 @@ const TripConfirmationCard = ({ trip, onConfirm, onCancel }) => {
           marginBottom: 3,
         }}
       >
-        <Typography sx={{ fontSize: '16px', color: '#6B7280' }}>Valor da viagem</Typography>
-        <Typography sx={{ fontWeight: 700, fontSize: '28px', color: '#3B82F6' }}>
+        <RouteText sx={{ fontSize: '16px', color: '#6B7280' }}>Valor da viagem</RouteText>
+        <RouteText sx={{ fontWeight: 700, fontSize: '28px', color: '#3B82F6' }}>
           {trip.price}
-        </Typography>
+        </RouteText>
       </Box>
 
-      {/* Payment Method */}
       <Box sx={{ marginBottom: 3 }}>
-        <Typography sx={{ fontSize: '14px', fontWeight: 600, color: '#1F2937', marginBottom: 1.5 }}>
+        <RouteText sx={{ fontSize: '14px', fontWeight: 600, color: '#1F2937', marginBottom: 1.5 }}>
           Método de Pagamento
-        </Typography>
+        </RouteText>
         <RadioGroup value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <FormControlLabel
@@ -181,7 +177,7 @@ const TripConfirmationCard = ({ trip, onConfirm, onCancel }) => {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                   <CreditCard size={18} color="#6B7280" />
-                  <Typography sx={{ fontSize: '14px', color: '#374151' }}>PIX</Typography>
+                  <RouteText sx={{ fontSize: '14px', color: '#374151' }}>PIX</RouteText>
                 </Box>
               }
               sx={{
@@ -198,7 +194,7 @@ const TripConfirmationCard = ({ trip, onConfirm, onCancel }) => {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                   <CreditCard size={18} color="#6B7280" />
-                  <Typography sx={{ fontSize: '14px', color: '#374151' }}>Cartão de Crédito</Typography>
+                  <RouteText sx={{ fontSize: '14px', color: '#374151' }}>Cartão de Crédito</RouteText>
                 </Box>
               }
               sx={{
@@ -215,7 +211,7 @@ const TripConfirmationCard = ({ trip, onConfirm, onCancel }) => {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                   <CreditCard size={18} color="#6B7280" />
-                  <Typography sx={{ fontSize: '14px', color: '#374151' }}>Cartão de Débito</Typography>
+                  <RouteText sx={{ fontSize: '14px', color: '#374151' }}>Cartão de Débito</RouteText>
                 </Box>
               }
               sx={{
@@ -232,7 +228,7 @@ const TripConfirmationCard = ({ trip, onConfirm, onCancel }) => {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                   <CreditCard size={18} color="#6B7280" />
-                  <Typography sx={{ fontSize: '14px', color: '#374151' }}>Dinheiro</Typography>
+                  <RouteText sx={{ fontSize: '14px', color: '#374151' }}>Dinheiro</RouteText>
                 </Box>
               }
               sx={{

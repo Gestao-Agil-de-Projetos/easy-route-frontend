@@ -1,5 +1,6 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Box, Button, Typography, TextField } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Box, Button, TextField } from '@mui/material';
 import StarRating from '../../atoms/StarRating';
+import RouteText from '../../atoms/RouteText';
 import { useState } from 'react';
 
 const ReviewDialog = ({ open, onClose, rating, onSubmit, tripInfo }) => {
@@ -30,37 +31,34 @@ const ReviewDialog = ({ open, onClose, rating, onSubmit, tripInfo }) => {
       }}
     >
       <DialogTitle>
-        <Typography sx={{ fontWeight: 600, fontSize: '20px', color: '#1F2937' }}>
+        <RouteText sx={{ fontWeight: 600, fontSize: '20px', color: '#1F2937' }}>
           Avaliar Viagem
-        </Typography>
+        </RouteText>
       </DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, paddingY: 2 }}>
-          {/* Trip Info */}
           {tripInfo && (
             <Box>
-              <Typography sx={{ fontSize: '16px', fontWeight: 500, color: '#374151', marginBottom: 1 }}>
+              <RouteText sx={{ fontSize: '16px', fontWeight: 500, color: '#374151', marginBottom: 1 }}>
                 {tripInfo.from} → {tripInfo.to}
-              </Typography>
-              <Typography sx={{ fontSize: '14px', color: '#6B7280' }}>
+              </RouteText>
+              <RouteText sx={{ fontSize: '14px', color: '#6B7280' }}>
                 {tripInfo.date} - {tripInfo.driver}
-              </Typography>
+              </RouteText>
             </Box>
           )}
 
-          {/* Star Rating */}
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-            <Typography sx={{ fontSize: '16px', fontWeight: 500, color: '#374151' }}>
+            <RouteText sx={{ fontSize: '16px', fontWeight: 500, color: '#374151' }}>
               Sua avaliação
-            </Typography>
+            </RouteText>
             <StarRating rating={rating} readOnly={true} />
           </Box>
 
-          {/* Review Text */}
           <Box>
-            <Typography sx={{ fontSize: '14px', fontWeight: 500, color: '#374151', marginBottom: 1 }}>
+            <RouteText sx={{ fontSize: '14px', fontWeight: 500, color: '#374151', marginBottom: 1 }}>
               Escreva seu feedback (opcional)
-            </Typography>
+            </RouteText>
             <TextField
               multiline
               rows={4}

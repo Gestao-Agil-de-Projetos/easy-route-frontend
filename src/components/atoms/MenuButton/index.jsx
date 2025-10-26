@@ -19,6 +19,7 @@ const MenuButton = ({ onClick }) => {
         backdropFilter: 'blur(2px)',
         overflow: 'visible',
         flexShrink: 0,
+        marginRight: { xs: '8px', sm: '12px' },
         '&:hover': {
           backgroundColor: 'rgba(255, 255, 255, 0.9)',
         },

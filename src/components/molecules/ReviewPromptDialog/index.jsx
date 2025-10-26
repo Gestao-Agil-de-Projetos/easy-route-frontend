@@ -1,4 +1,5 @@
-import { Dialog, DialogTitle, DialogContent, Box, Button, Typography } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Box, Button } from '@mui/material';
+import RouteText from '../../atoms/RouteText';
 
 const ReviewPromptDialog = ({ open, onClose, onAccept, onDecline }) => {
   return (
@@ -14,14 +15,14 @@ const ReviewPromptDialog = ({ open, onClose, onAccept, onDecline }) => {
       }}
     >
       <DialogTitle>
-        <Typography sx={{ fontWeight: 600, fontSize: '18px', color: '#1F2937', textAlign: 'center' }}>
+        <RouteText sx={{ fontWeight: 600, fontSize: '18px', color: '#1F2937', textAlign: 'center' }}>
           Deseja escrever uma mensagem?
-        </Typography>
+        </RouteText>
       </DialogTitle>
       <DialogContent>
-        <Typography sx={{ fontSize: '14px', color: '#6B7280', textAlign: 'center', marginBottom: 2 }}>
+        <RouteText sx={{ fontSize: '14px', color: '#6B7280', textAlign: 'center', marginBottom: 2 }}>
           Compartilhe sua experiência e ajude outros passageiros!
-        </Typography>
+        </RouteText>
         <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
           <Button
             onClick={onDecline}
