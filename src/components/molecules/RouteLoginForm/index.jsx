@@ -20,11 +20,11 @@ export default function RouteLoginForm() {
       validationSchema={loginSchema}
       onSubmit={async (values, { setSubmitting }) => {
         try {
-          const data = await login(values.email, values.password);
+          const response = await login(values.email, values.password);
 
-          loginUser(data.token);
+          loginUser(response.data.token);
 
-          const decoded = jwtDecode(data.token);
+          const decoded = jwtDecode(response.data.token);
           console.log("Decoded token:", decoded);
 
           if (decoded.role === "PASSENGER") {
