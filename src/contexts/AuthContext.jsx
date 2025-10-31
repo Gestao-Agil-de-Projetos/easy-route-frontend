@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
@@ -15,10 +16,10 @@ export function AuthProvider({ children }) {
         setUser(decoded);
         setToken(savedToken);
       } catch (err) {
-        console.error("Token inválido:", err);
         localStorage.removeItem("token");
       }
     }
+    setLoading(false);
   }, []);
 
   const loginUser = (token) => {
@@ -39,7 +40,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loginUser, logoutUser }}>
+    <AuthContext.Provider value={{ user, token, loginUser, logoutUser, loading }}>
       {children}
     </AuthContext.Provider>
   );
