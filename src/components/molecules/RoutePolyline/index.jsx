@@ -49,7 +49,6 @@ const RoutePolyline = ({ start, end, color = '#3B82F6' }) => {
         color: color,
         weight: 5,
         opacity: 0.8,
-        dashArray: '10, 10',
         lineCap: 'round',
       }}
     />

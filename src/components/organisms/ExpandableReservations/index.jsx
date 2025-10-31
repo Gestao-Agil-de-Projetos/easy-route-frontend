@@ -1,15 +1,22 @@
-import { Box, Collapse, IconButton } from '@mui/material';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import ReservationCard from '../../molecules/ReservationCard';
-import HistoryCard from '../../molecules/HistoryCard';
-import ViewReviewDialog from '../../molecules/ViewReviewDialog';
-import StarRating from '../../atoms/StarRating';
-import ReviewPromptDialog from '../../molecules/ReviewPromptDialog';
-import ReviewDialog from '../../molecules/ReviewDialog';
-import RouteText from '../../atoms/RouteText';
-import { useState } from 'react';
+import { Box, Collapse, IconButton } from "@mui/material";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import ReservationCard from "../../molecules/ReservationCard";
+import HistoryCard from "../../molecules/HistoryCard";
+import ViewReviewDialog from "../../molecules/ViewReviewDialog";
+import StarRating from "../../atoms/StarRating";
+import ReviewPromptDialog from "../../molecules/ReviewPromptDialog";
+import ReviewDialog from "../../molecules/ReviewDialog";
+import RouteText from "../../atoms/RouteText";
+import { useState } from "react";
 
-const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, lastTrip, onReviewComplete }) => {
+const ExpandableReservations = ({
+  reservations,
+  history,
+  isExpanded,
+  onToggle,
+  lastTrip,
+  onReviewComplete,
+}) => {
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [showReviewDialog, setShowReviewDialog] = useState(false);
   const [rating, setRating] = useState(0);
@@ -40,13 +47,11 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
 
   const handlePromptDecline = () => {
     setShowPrompt(false);
-    console.log('Review salvo (apenas nota):', { rating, text: '' });
-    onReviewComplete && onReviewComplete({ rating, text: '' });
+    onReviewComplete && onReviewComplete({ rating, text: "" });
   };
 
   const handleReviewSubmit = (review) => {
     setShowReviewTextDialog(false);
-    console.log('Review completo salvo:', review);
     onReviewComplete && onReviewComplete(review);
   };
 
@@ -54,150 +59,222 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
     <>
       <Box
         sx={{
-          width: '100%',
+          width: "100%",
         }}
       >
-        {/* Toggle Bar */}
         <Box
           onClick={onToggle}
           sx={{
-            backgroundColor: 'rgba(255, 255, 255, 0.85)',
-            border: '1px solid rgba(255, 255, 255, 0.3)',
-            backdropFilter: 'blur(5px)',
-            borderRadius: '12px',
-            padding: { xs: '10px 16px', sm: '12px 20px' },
-            marginTop: '12px',
-            cursor: 'pointer',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            boxShadow: '0px 4px 6px -4px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1)',
-            transition: 'all 0.2s',
-            '&:hover': {
-              backgroundColor: 'rgba(255, 255, 255, 0.95)',
-              transform: 'translateY(-2px)',
-              boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.15)',
+            backgroundColor: "rgba(255, 255, 255, 0.85)",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
+            backdropFilter: "blur(5px)",
+            borderRadius: "12px",
+            padding: { xs: "10px 16px", sm: "12px 20px" },
+            marginTop: "12px",
+            cursor: "pointer",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            boxShadow:
+              "0px 4px 6px -4px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1)",
+            transition: "all 0.2s",
+            "&:hover": {
+              backgroundColor: "rgba(255, 255, 255, 0.95)",
+              transform: "translateY(-2px)",
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)",
             },
           }}
         >
-          <RouteText sx={{ fontWeight: 600, fontSize: { xs: '14px', sm: '16px' }, color: '#1F2937' }}>
+          <RouteText
+            sx={{
+              fontWeight: 600,
+              fontSize: { xs: "14px", sm: "16px" },
+              color: "#1F2937",
+            }}
+          >
             Minhas Viagens
           </RouteText>
-          <IconButton size="small" sx={{ padding: { xs: '4px', sm: '8px' } }}>
+          <IconButton size="small" sx={{ padding: { xs: "4px", sm: "8px" } }}>
             {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
           </IconButton>
         </Box>
 
-        {/* Last Trip Review - Static Container */}
-        {lastTrip && (
+        {lastTrip && Object.keys(lastTrip).length > 0 && (
           <Box
             sx={{
-              backgroundColor: 'rgba(255, 255, 255, 0.85)',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              boxShadow: '0px 4px 6px -4px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1)',
-              backdropFilter: 'blur(5px)',
-              borderRadius: '16px',
-              padding: { xs: '16px', sm: '20px', md: '24px' },
-              marginTop: '8px',
-              position: 'relative',
+              backgroundColor: "rgba(255, 255, 255, 0.85)",
+              border: "1px solid rgba(255, 255, 255, 0.3)",
+              boxShadow:
+                "0px 4px 6px -4px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1)",
+              backdropFilter: "blur(5px)",
+              borderRadius: "16px",
+              padding: { xs: "16px", sm: "20px", md: "24px" },
+              marginTop: "8px",
+              position: "relative",
             }}
           >
             <RouteText
               sx={{
-                fontFamily: 'Inter',
+                fontFamily: "Inter",
                 fontWeight: 600,
-                fontSize: '16px',
-                lineHeight: '24px',
-                color: '#1F2937',
+                fontSize: "16px",
+                lineHeight: "24px",
+                color: "#1F2937",
                 marginBottom: { xs: 2, sm: 2.5 },
               }}
             >
-              Sua Última Viagem
+              Avalie Sua Última Viagem
             </RouteText>
 
             <Box sx={{ marginBottom: 1 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, marginBottom: 0.5 }}>
-                <RouteText 
-                  sx={{ 
-                    fontFamily: 'Inter',
-                    fontWeight: 700, 
-                    fontSize: '20px', 
-                    lineHeight: '28px',
-                    color: '#1F2937',
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1.5,
+                  marginBottom: 0.5,
+                }}
+              >
+                <RouteText
+                  sx={{
+                    fontFamily: "Inter",
+                    fontWeight: 700,
+                    fontSize: "20px",
+                    lineHeight: "28px",
+                    color: "#1F2937",
                   }}
                 >
                   {lastTrip.from}
                 </RouteText>
-                <RouteText sx={{ color: '#9CA3AF', fontSize: '18px' }}>→</RouteText>
-                <RouteText 
-                  sx={{ 
-                    fontFamily: 'Inter',
-                    fontWeight: 700, 
-                    fontSize: '20px',
-                    lineHeight: '28px', 
-                    color: '#1F2937',
+                <RouteText sx={{ color: "#9CA3AF", fontSize: "18px" }}>
+                  →
+                </RouteText>
+                <RouteText
+                  sx={{
+                    fontFamily: "Inter",
+                    fontWeight: 700,
+                    fontSize: "20px",
+                    lineHeight: "28px",
+                    color: "#1F2937",
                   }}
                 >
                   {lastTrip.to}
                 </RouteText>
               </Box>
 
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <RouteText sx={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', lineHeight: '20px', color: '#4B5563' }}>
-                  69
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                <RouteText
+                  sx={{
+                    fontFamily: "Inter",
+                    fontWeight: 500,
+                    fontSize: "14px",
+                    lineHeight: "20px",
+                    color: "#4B5563",
+                  }}
+                >
+                  {lastTrip.distance}
                 </RouteText>
-                <RouteText sx={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', lineHeight: '20px', color: '#6B7280' }}>
+                <RouteText
+                  sx={{
+                    fontFamily: "Inter",
+                    fontWeight: 400,
+                    fontSize: "14px",
+                    lineHeight: "20px",
+                    color: "#6B7280",
+                  }}
+                >
                   Km
                 </RouteText>
-                <RouteText sx={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', lineHeight: '20px', color: '#4B5563' }}>
-                  ~1h06
+                <RouteText
+                  sx={{
+                    fontFamily: "Inter",
+                    fontWeight: 500,
+                    fontSize: "14px",
+                    lineHeight: "20px",
+                    color: "#4B5563",
+                  }}
+                >
+                  ~{lastTrip.estimated_time}
                 </RouteText>
               </Box>
             </Box>
 
-            {/* Star Rating - Top Right */}
-            <Box 
-              sx={{ 
-                position: 'absolute',
-                top: { xs: '20px', sm: '24px', md: '27px' },
-                right: { xs: '16px', sm: '20px', md: '24px' },
-                display: 'flex',
+            <Box
+              sx={{
+                position: "absolute",
+                top: { xs: "20px", sm: "24px", md: "27px" },
+                right: { xs: "16px", sm: "20px", md: "24px" },
+                display: "flex",
                 gap: 0.5,
               }}
             >
-              <StarRating rating={rating} onRate={handleRatingChange} size={24} />
+              <StarRating
+                rating={rating}
+                onRate={handleRatingChange}
+                size={24}
+              />
             </Box>
 
-            {/* Bottom Section with border */}
             <Box
               sx={{
                 marginTop: { xs: 2, sm: 3 },
                 paddingTop: { xs: 2, sm: 3 },
-                borderTop: '1px solid rgba(209, 213, 219, 0.6)',
-                display: 'flex',
-                flexWrap: 'wrap',
-                alignItems: 'center',
+                borderTop: "1px solid rgba(209, 213, 219, 0.6)",
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
                 gap: 2,
-                justifyContent: 'space-between',
+                justifyContent: "space-between",
               }}
             >
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
-                <RouteText sx={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', lineHeight: '20px', color: '#6B7280' }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 2,
+                  flexWrap: "wrap",
+                }}
+              >
+                <RouteText
+                  sx={{
+                    fontFamily: "Inter",
+                    fontWeight: 400,
+                    fontSize: "14px",
+                    lineHeight: "20px",
+                    color: "#6B7280",
+                  }}
+                >
                   {lastTrip.date}
                 </RouteText>
-                <RouteText sx={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '16px', lineHeight: '24px', color: '#1F2937' }}>
+                <RouteText
+                  sx={{
+                    fontFamily: "Inter",
+                    fontWeight: 700,
+                    fontSize: "16px",
+                    lineHeight: "24px",
+                    color: "#1F2937",
+                  }}
+                >
                   {lastTrip.price}
                 </RouteText>
                 <Box
                   sx={{
-                    padding: '2px 8px',
-                    backgroundColor: '#DBEAFE',
-                    borderRadius: '9999px',
-                    display: 'inline-flex',
-                    alignItems: 'center',
+                    padding: "2px 8px",
+                    backgroundColor: "#DBEAFE",
+                    borderRadius: "9999px",
+                    display: "inline-flex",
+                    alignItems: "center",
                   }}
                 >
-                  <RouteText sx={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '12px', lineHeight: '16px', color: '#1D4ED8' }}>
+                  <RouteText
+                    sx={{
+                      fontFamily: "Inter",
+                      fontWeight: 600,
+                      fontSize: "12px",
+                      lineHeight: "16px",
+                      color: "#1D4ED8",
+                    }}
+                  >
                     PIX
                   </RouteText>
                 </Box>
@@ -205,15 +282,23 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
 
               <Box
                 sx={{
-                  padding: '6px 12px',
-                  backgroundColor: '#3B82F6',
-                  borderRadius: '9999px',
-                  display: 'flex',
-                  alignItems: 'center',
+                  padding: "6px 12px",
+                  backgroundColor: "#3B82F6",
+                  borderRadius: "9999px",
+                  display: "flex",
+                  alignItems: "center",
                   gap: 1,
                 }}
               >
-                <RouteText sx={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '14px', lineHeight: '20px', color: '#FFFFFF' }}>
+                <RouteText
+                  sx={{
+                    fontFamily: "Inter",
+                    fontWeight: 600,
+                    fontSize: "14px",
+                    lineHeight: "20px",
+                    color: "#FFFFFF",
+                  }}
+                >
                   {lastTrip.driver}
                 </RouteText>
               </Box>
@@ -221,55 +306,63 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
           </Box>
         )}
 
-        {/* Expandable Content */}
         <Collapse in={isExpanded}>
           <Box
             sx={{
-              backgroundColor: 'rgba(255, 255, 255, 0.85)',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              backdropFilter: 'blur(5px)',
-              borderRadius: '12px',
-              padding: { xs: '16px', sm: '20px', md: '24px' },
-              marginTop: '8px',
-              boxShadow: '0px 4px 6px -4px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1)',
+              backgroundColor: "rgba(255, 255, 255, 0.85)",
+              border: "1px solid rgba(255, 255, 255, 0.3)",
+              backdropFilter: "blur(5px)",
+              borderRadius: "12px",
+              padding: { xs: "16px", sm: "20px", md: "24px" },
+              marginTop: "8px",
+              boxShadow:
+                "0px 4px 6px -4px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1)",
             }}
           >
-            {/* Content */}
             <Box
               sx={{
-                display: 'grid',
-                gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
                 gap: { xs: 2, sm: 3 },
               }}
             >
               <Box>
-                <RouteText sx={{ fontWeight: 600, fontSize: '14px', color: '#6B7280', marginBottom: 1.5 }}>
+                <RouteText
+                  sx={{
+                    fontWeight: 600,
+                    fontSize: "14px",
+                    color: "#6B7280",
+                    marginBottom: 1.5,
+                  }}
+                >
                   Reservas
                 </RouteText>
                 <Box
                   sx={{
-                    maxHeight: '300px',
-                    overflowY: 'auto',
-                    paddingRight: '8px',
-                    '&::-webkit-scrollbar': {
-                      width: '4px',
+                    maxHeight: "300px",
+                    overflowY: "auto",
+                    paddingRight: "8px",
+                    "&::-webkit-scrollbar": {
+                      width: "4px",
                     },
-                    '&::-webkit-scrollbar-track': {
-                      background: 'transparent',
+                    "&::-webkit-scrollbar-track": {
+                      background: "transparent",
                     },
-                    '&::-webkit-scrollbar-thumb': {
-                      background: '#D1D5DB',
-                      borderRadius: '4px',
+                    "&::-webkit-scrollbar-thumb": {
+                      background: "#D1D5DB",
+                      borderRadius: "4px",
                     },
                   }}
                 >
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                  <Box
+                    sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}
+                  >
                     {reservations.map((reservation, index) => (
                       <ReservationCard key={index} {...reservation} />
                     ))}
                     {reservations.length === 0 && (
-                      <Box sx={{ padding: '48px 24px', textAlign: 'center' }}>
-                        <RouteText sx={{ color: '#9CA3AF', fontSize: '14px' }}>
+                      <Box sx={{ padding: "48px 24px", textAlign: "center" }}>
+                        <RouteText sx={{ color: "#9CA3AF", fontSize: "14px" }}>
                           Você não tem reservas ativas
                         </RouteText>
                       </Box>
@@ -279,33 +372,46 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
               </Box>
 
               <Box>
-                <RouteText sx={{ fontWeight: 600, fontSize: '14px', color: '#6B7280', marginBottom: 1.5 }}>
+                <RouteText
+                  sx={{
+                    fontWeight: 600,
+                    fontSize: "14px",
+                    color: "#6B7280",
+                    marginBottom: 1.5,
+                  }}
+                >
                   Histórico
                 </RouteText>
                 <Box
                   sx={{
-                    maxHeight: '300px',
-                    overflowY: 'auto',
-                    paddingRight: '8px',
-                    '&::-webkit-scrollbar': {
-                      width: '4px',
+                    maxHeight: "300px",
+                    overflowY: "auto",
+                    paddingRight: "8px",
+                    "&::-webkit-scrollbar": {
+                      width: "4px",
                     },
-                    '&::-webkit-scrollbar-track': {
-                      background: 'transparent',
+                    "&::-webkit-scrollbar-track": {
+                      background: "transparent",
                     },
-                    '&::-webkit-scrollbar-thumb': {
-                      background: '#D1D5DB',
-                      borderRadius: '4px',
+                    "&::-webkit-scrollbar-thumb": {
+                      background: "#D1D5DB",
+                      borderRadius: "4px",
                     },
                   }}
                 >
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                  <Box
+                    sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}
+                  >
                     {history.map((item, index) => (
-                      <HistoryCard key={index} {...item} onClick={() => handleHistoryClick(item)} />
+                      <HistoryCard
+                        key={index}
+                        {...item}
+                        onClick={() => handleHistoryClick(item)}
+                      />
                     ))}
                     {history.length === 0 && (
-                      <Box sx={{ padding: '48px 24px', textAlign: 'center' }}>
-                        <RouteText sx={{ color: '#9CA3AF', fontSize: '14px' }}>
+                      <Box sx={{ padding: "48px 24px", textAlign: "center" }}>
+                        <RouteText sx={{ color: "#9CA3AF", fontSize: "14px" }}>
                           Você não tem viagens no histórico
                         </RouteText>
                       </Box>
@@ -318,7 +424,6 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
         </Collapse>
       </Box>
 
-      {/* Review Dialogs */}
       <ReviewPromptDialog
         open={showPrompt}
         onClose={handlePromptDecline}
@@ -334,7 +439,6 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
         onSubmit={handleReviewSubmit}
       />
 
-      {/* View Review Dialog */}
       {selectedTrip && (
         <ViewReviewDialog
           open={showReviewDialog}

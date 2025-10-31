@@ -1,135 +1,152 @@
-import { useState, useEffect } from 'react';
-import { Box } from '@mui/material';
-import Header from '../../organisms/Header';
-import SearchSection from '../../organisms/SearchSection';
-import MapWithVans from '../../organisms/MapWithVans';
-import TripConfirmationCard from '../../molecules/TripConfirmationCard';
-import ExpandableReservations from '../../organisms/ExpandableReservations';
+import { useState, useEffect } from "react";
+import { Box } from "@mui/material";
+import Header from "../../organisms/Header";
+import SearchSection from "../../organisms/SearchSection";
+import MapWithVans from "../../organisms/MapWithVans";
+import TripConfirmationCard from "../../molecules/TripConfirmationCard";
+import ExpandableReservations from "../../organisms/ExpandableReservations";
+import {
+  createBooking,
+  getBookings,
+  getLatestBookingWithoutAssessment,
+} from "../../../api/booking";
+import { getTripsByCoordinates } from "../../../api/trip";
+import { useAuth } from "../../../hooks/useAuth";
+import RouteSnackBar from "../../atoms/RouteSnackBar";
+import { jwtDecode } from "jwt-decode";
+import { calcularDistanciaEmKm } from "../../../utils";
+import { calcularDuracao } from "../../../utils/date";
 
 const HomePage = () => {
-  const [searchQuery, setSearchQuery] = useState({ from: '', to: '', date: 'Hoje' });
+  const [searchQuery, setSearchQuery] = useState({
+    from: "",
+    to: "",
+    date: "Hoje",
+  });
   const [userLocation, setUserLocation] = useState(null);
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [availableTrips, setAvailableTrips] = useState([]);
   const [reservationsExpanded, setReservationsExpanded] = useState(false);
   const [showLastTrip, setShowLastTrip] = useState(true);
 
-  const lastTrip = {
-    from: 'VCA',
-    to: 'POÇÕES',
-    date: '25/10 - 22h',
-    driver: 'Pedro Tigre',
-    price: 'R$ 25,40',
+  const { token } = useAuth();
+  const [history, setHistory] = useState([]);
+  const [reservations, setReservation] = useState([]);
+  const [lastTrip, setLastTrip] = useState([]);
+
+  const [snack, setSnack] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
+  const handleSearchChange = async (query) => {
+    setSearchQuery(query);
+
+    const { from, to, date } = query;
+    if (!from || !to || !date) return;
+
+    try {
+      const trips = await getTripsByCoordinates(from, to, date, token);
+      setAvailableTrips(trips.data || []);
+    } catch (error) {
+      console.error("Erro ao buscar viagens:", error);
+      setAvailableTrips([]);
+    }
   };
 
-  const reservations = [
-    { from: 'VCA', to: 'POÇÕES', time: '14:00', date: 'Hoje', timeBadge: '2h', variant: 'red' },
-    { from: 'BRUMADO', to: 'VCA', time: '08:00', date: 'Amanhã', timeBadge: '8h', variant: 'orange' },
-    { from: 'VCA', to: 'BARRA', time: '09:30', date: '28/10', timeBadge: '28/10', variant: 'yellow' },
-    { from: 'POÇÕES', to: 'VITÓRIA DA CONQUISTA', time: '16:00', date: 'Hoje', timeBadge: '4h', variant: 'red' },
-    { from: 'VCA', to: 'ITAPETINGA', time: '07:30', date: 'Amanhã', timeBadge: '10h', variant: 'orange' },
-    { from: 'BARRA', to: 'BRUMADO', time: '11:00', date: '29/10', timeBadge: '29/10', variant: 'yellow' },
-  ];
+  useEffect(() => {
+    if (!token) return;
 
-  const history = [
-    { 
-      from: 'VCA', 
-      to: 'POÇÕES', 
-      date: '22/10', 
-      price: 'R$ 35,00',
-      review: { rating: 5, text: 'Viagem excelente! Motorista pontual e educado.' }
-    },
-    { 
-      from: 'BRUMADO', 
-      to: 'VCA', 
-      date: '20/10', 
-      price: 'R$ 45,00',
-      review: { rating: 4, text: '' }
-    },
-    { 
-      from: 'VCA', 
-      to: 'BARRA', 
-      date: '18/10', 
-      price: 'R$ 70,00',
-      review: { rating: 3, text: 'Viagem ok, mas teve atraso.' }
-    },
-    { 
-      from: 'ITAPETINGA', 
-      to: 'VCA', 
-      date: '15/10', 
-      price: 'R$ 50,00',
-      review: { rating: 5, text: 'Ótima viagem!' }
-    },
-    { 
-      from: 'VCA', 
-      to: 'POÇÕES', 
-      date: '12/10', 
-      price: 'R$ 35,00',
-      review: { rating: 4, text: 'Muito bom' }
-    },
-    { 
-      from: 'BARRA', 
-      to: 'BRUMADO', 
-      date: '10/10', 
-      price: 'R$ 60,00',
-      review: { rating: 5, text: 'Perfeito!' }
-    },
-  ];
+    const mapBookingToUI = (booking, isHistory = false) => {
+      const dateObj = new Date(booking.trip?.start_time ?? new Date());
+      const hours = String(dateObj.getHours()).padStart(2, "0");
+      const minutes = String(dateObj.getMinutes()).padStart(2, "0");
+      const time = `${hours}:${minutes}`;
+      const today = new Date();
 
-  const allTrips = [
-    {
-      id: 1,
-      from: 'BRUMADO',
-      to: 'VCA',
-      distance: '120 Km',
-      duration: '2h30',
-      driver: 'João Silva',
-      seats: 3,
-      date: 'Hoje',
-      time: '14:00',
-      price: 'R$ 45,00',
-      position: [-14.2031, -41.6656],
-    },
-    {
-      id: 2,
-      from: 'VCA',
-      to: 'POÇÕES',
-      distance: '69 Km',
-      duration: '1h06',
-      driver: 'Maria Santos',
-      seats: 2,
-      date: 'Hoje',
-      time: '16:00',
-      price: 'R$ 35,00',
-      position: [-14.8631, -40.8444],
-    },
-    {
-      id: 3,
-      from: 'BRUMADO',
-      to: 'VCA',
-      distance: '120 Km',
-      duration: '2h30',
-      driver: 'Pedro Costa',
-      seats: 4,
-      date: 'Amanhã',
-      time: '08:00',
-      price: 'R$ 45,00',
-      position: [-14.2031, -41.6656],
-    },
-    {
-      id: 4,
-      from: 'POÇÕES',
-      to: 'BRUMADO',
-      distance: '85 Km',
-      duration: '1h45',
-      driver: 'Ana Lima',
-      seats: 1,
-      date: 'Hoje',
-      time: '18:00',
-      price: 'R$ 40,00',
-      position: [-14.5219, -40.3653],
-    },
-  ];
+      return {
+        from: booking.trip?.route?.start_name || "",
+        to: booking.trip?.route?.end_name || "",
+        date:
+          dateObj.getFullYear() === today.getFullYear() &&
+          dateObj.getMonth() === today.getMonth() &&
+          dateObj.getDate() === today.getDate()
+            ? "Hoje"
+            : `${String(dateObj.getDate()).padStart(2, "0")}/${String(
+                dateObj.getMonth() + 1
+              ).padStart(2, "0")}`,
+        time: time || "00:00",
+        price: booking.trip?.price ? `R$ ${booking.trip.price}` : "R$ --",
+        driver: booking.trip?.route?.van?.owner_id || "Motorista",
+        timeBadge: "0h",
+        variant: isHistory ? "grey" : "red",
+        review: { rating: 0, text: "" },
+        status:
+          isHistory && booking.status === "FINISHED"
+            ? "Finalizada"
+            : "Cancelada",
+      };
+    };
+
+    const mapLastBookingToUI = (booking) => {
+      if (!booking?.trip?.start_time) return null;
+
+      const dateObj = new Date(booking.trip.start_time);
+      const hours = String(dateObj.getHours()).padStart(2, "0");
+
+      setShowLastTrip(true);
+
+      return {
+        from: booking.trip.route?.start_name || "",
+        to: booking.trip.route?.end_name || "",
+        date: `${String(dateObj.getDate()).padStart(2, "0")}/${String(
+          dateObj.getMonth() + 1
+        )} - ${hours}`,
+        driver: booking.trip.route.van.owner.name,
+        price: booking.trip?.price ? `R$ ${booking.trip.price}` : "R$ --",
+        distance: calcularDistanciaEmKm(
+          booking.trip.route.start_latitude,
+          booking.trip.route.start_longitude,
+          booking.trip.route.end_latitude,
+          booking.trip.route.end_longitude
+        ).toFixed(2),
+        estimated_time: calcularDuracao(
+          booking.trip.start_time,
+          booking.trip.estimated_end_time
+        ),
+      };
+    };
+
+    const fetchReservations = async () => {
+      try {
+        const historyData = await getBookings("CANCELLED,FINISHED", token);
+        const reservationData = await getBookings("PENDING,CONFIRMED", token);
+
+        const formattedHistory = (historyData.data || []).map((b) =>
+          mapBookingToUI(b, true)
+        );
+        const formattedReservations = (reservationData.data || []).map((b) =>
+          mapBookingToUI(b, false)
+        );
+
+        const lastTrip = await getLatestBookingWithoutAssessment(token);
+
+        let formattedLastTrip = null;
+        if (lastTrip?.data) {
+          formattedLastTrip = mapLastBookingToUI(lastTrip.data);
+        }
+
+        setHistory(formattedHistory || []);
+        setReservation(formattedReservations || []);
+        setLastTrip(formattedLastTrip || {});
+      } catch (err) {
+        console.error("Erro ao buscar histórico:", err);
+      }
+    };
+
+    fetchReservations();
+  }, [token]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -139,7 +156,7 @@ const HomePage = () => {
           setUserLocation([latitude, longitude]);
         },
         (error) => {
-          console.error('Erro ao obter localização:', error);
+          console.error("Erro ao obter localização:", error);
           setUserLocation([-14.8631, -40.8444]);
         }
       );
@@ -148,102 +165,86 @@ const HomePage = () => {
     }
   }, []);
 
-  const handleSearchChange = (query) => {
-    setSearchQuery(query);
+  const handleTripSelect = (trip) => setSelectedTrip(trip);
+  const handleConfirmTrip = async (trip) => {
+    try {
+      const decoded = jwtDecode(token);
 
-    const filtered = allTrips.filter((trip) => {
-      const fromQuery = query?.from?.toLowerCase().trim() || '';
-      const toQuery = query?.to?.toLowerCase().trim() || '';
-      const dateQuery = query?.date || '';
+      const bookingData = {
+        userId: decoded.id,
+        tripId: trip.id,
+        stopPoint: {
+          latitude: userLocation ? userLocation[0] : trip.route.start_latitude,
+          longitude: userLocation
+            ? userLocation[1]
+            : trip.route.start_longitude,
+          description: `Ponto de parada usuario ${decoded.id}`,
+        },
+      };
 
-      const fromMatches = !fromQuery || trip.from.toLowerCase().includes(fromQuery);
-      const toMatches = !toQuery || trip.to.toLowerCase().includes(toQuery);
-      const dateMatches = !dateQuery || trip.date === dateQuery;
+      const response = await createBooking(bookingData, token);
 
-      return fromMatches && toMatches && dateMatches;
-    });
-
-    setAvailableTrips(filtered);
+      setSnack({
+        open: true,
+        message: "Reserva realizada com sucesso.",
+        severity: "success",
+      });
+      setSelectedTrip(null);
+    } catch (err) {
+      setSnack({
+        open: true,
+        message:
+          err.response?.data?.message ||
+          err.message ||
+          "Erro ao confirmar reserva. Tente novamente mais tarde",
+        severity: "error",
+      });
+    }
   };
-
-  const handleTripSelect = (trip) => {
-    setSelectedTrip(trip);
-  };
-
-  const handleConfirmTrip = () => {
-    console.log('Viagem confirmada:', selectedTrip);
-    alert(`Reserva confirmada!\n${selectedTrip.from} → ${selectedTrip.to}\nMotorista: ${selectedTrip.driver}`);
-    setSelectedTrip(null);
-  };
-
-  const handleCancelTrip = () => {
-    setSelectedTrip(null);
-  };
-
+  const handleCancelTrip = () => setSelectedTrip(null);
   const handleLogoClick = () => {
     setSelectedTrip(null);
-    setSearchQuery({ from: '', to: '', date: 'Hoje' });
+    setSearchQuery({ from: "", to: "", date: "Hoje" });
     setAvailableTrips([]);
   };
-
-  const handleReviewComplete = (review) => {
-    console.log('Review completo:', review);
+  const handleReviewComplete = () => {
     setShowLastTrip(false);
   };
 
-  const vansToShow = selectedTrip ? [] : (availableTrips.length > 0 ? availableTrips : allTrips);
-
   return (
-    <Box sx={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
-      {/* Mapa como Background */}
+    <Box
+      sx={{
+        position: "relative",
+        width: "100vw",
+        height: "100vh",
+        overflow: "hidden",
+      }}
+    >
       {userLocation && (
         <MapWithVans
           userLocation={userLocation}
-          vans={vansToShow}
           selectedTrip={selectedTrip}
           onVanClick={handleTripSelect}
         />
       )}
 
-      {/* Header */}
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 999,
-          overflow: 'visible',
-        }}
-      >
+      <Box sx={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 999 }}>
         <Header onLogoClick={handleLogoClick} />
       </Box>
 
-      {/* Search Section - só mostra se não tem viagem selecionada */}
       {!selectedTrip && (
         <Box
           sx={{
-            position: 'fixed',
-            top: { xs: '90px', sm: '100px' },
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: { xs: '95%', sm: '90%' },
-            maxWidth: '900px',
-            maxHeight: { xs: 'calc(100vh - 100px)', sm: 'calc(100vh - 120px)' },
-            overflowY: 'auto',
-            overflowX: 'hidden',
+            position: "fixed",
+            top: { xs: "90px", sm: "100px" },
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: { xs: "95%", sm: "90%" },
+            maxWidth: "900px",
+            maxHeight: { xs: "calc(100vh - 100px)", sm: "calc(100vh - 120px)" },
+            overflowY: "auto",
             zIndex: 1000,
-            paddingBottom: { xs: '20px', sm: '24px' },
-            '&::-webkit-scrollbar': {
-              width: '6px',
-            },
-            '&::-webkit-scrollbar-track': {
-              background: 'transparent',
-            },
-            '&::-webkit-scrollbar-thumb': {
-              background: 'rgba(0, 0, 0, 0.2)',
-              borderRadius: '3px',
-            },
+            paddingBottom: { xs: "20px", sm: "24px" },
           }}
         >
           <SearchSection
@@ -252,7 +253,6 @@ const HomePage = () => {
             onTripSelect={handleTripSelect}
           />
 
-          {/* Expandable Reservations with Last Trip */}
           <ExpandableReservations
             reservations={reservations}
             history={history}
@@ -264,7 +264,6 @@ const HomePage = () => {
         </Box>
       )}
 
-      {/* Trip Confirmation Card */}
       {selectedTrip && (
         <TripConfirmationCard
           trip={selectedTrip}
@@ -272,6 +271,13 @@ const HomePage = () => {
           onCancel={handleCancelTrip}
         />
       )}
+
+      <RouteSnackBar
+        open={snack.open}
+        message={snack.message}
+        severity={snack.severity}
+        onClose={() => setSnack({ ...snack, open: false })}
+      />
     </Box>
   );
 };

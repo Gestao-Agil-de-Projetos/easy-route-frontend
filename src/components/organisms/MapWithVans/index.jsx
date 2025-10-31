@@ -1,10 +1,16 @@
-import { useState, useEffect } from 'react';
-import LeafletMap from '../../atoms/LeafletMap';
-import VanMarker from '../../atoms/VanMarker';
-import RoutePolyline from '../../molecules/RoutePolyline';
+import { useState, useEffect } from "react";
+import LeafletMap from "../../atoms/LeafletMap";
+import VanMarker from "../../atoms/VanMarker";
+import RoutePolyline from "../../molecules/RoutePolyline";
+import { getTripsNearby } from "../../../api/trip";
+import { useAuth } from "../../../hooks/useAuth";
 
-const MapWithVans = ({ userLocation, vans, selectedTrip, onVanClick }) => {
-  const [mapCenter, setMapCenter] = useState(userLocation || [-14.8631, -40.8444]);
+const MapWithVans = ({ userLocation, selectedTrip, onVanClick }) => {
+  const { token } = useAuth();
+  const [mapCenter, setMapCenter] = useState(
+    userLocation || [-14.8631, -40.8444]
+  );
+  const [nearbyTrips, setNearbyTrips] = useState([]);
 
   useEffect(() => {
     if (userLocation) {
@@ -12,60 +18,70 @@ const MapWithVans = ({ userLocation, vans, selectedTrip, onVanClick }) => {
     }
   }, [userLocation]);
 
-  const getVanPosition = (van, index) => {
-    if (van.position) {
-      return van.position;
-    }
-    
-    const latOffset = (Math.random() - 0.5) * 0.1;
-    const lngOffset = (Math.random() - 0.5) * 0.1;
-    
-    return [
-      mapCenter[0] + latOffset,
-      mapCenter[1] + lngOffset,
-    ];
-  };
+  useEffect(() => {
+    if (!token) return;
+
+    const fetchNearbyTrips = async () => {
+      try {
+        const res = await getTripsNearby(mapCenter[0], mapCenter[1], token);
+        if (res.success) {
+          setNearbyTrips(res.data);
+        }
+      } catch (err) {
+        console.error("Erro ao buscar trips próximas:", err);
+      }
+    };
+
+    fetchNearbyTrips();
+  }, [mapCenter]);
 
   const getRouteCoordinates = (trip) => {
     if (!trip) return { start: null, end: null };
-
-    const cityCoordinates = {
-      'BRUMADO': [-14.2031, -41.6656],
-      'VCA': [-14.8631, -40.8444],
-      'POÇÕES': [-14.5219, -40.3653],
-      'BARRA': [-11.0889, -43.1417],
-      'ITABUNA': [-14.7858, -39.2797],
-    };
-
-    const start = cityCoordinates[trip.from] || mapCenter;
-    const end = cityCoordinates[trip.to] || mapCenter;
-
+    const start = [
+      Number(trip.route.start_latitude),
+      Number(trip.route.start_longitude),
+    ];
+    const end = [
+      Number(trip.route.end_latitude),
+      Number(trip.route.end_longitude),
+    ];
     return { start, end };
   };
 
-  const { start: routeStart, end: routeEnd } = selectedTrip ? getRouteCoordinates(selectedTrip) : { start: null, end: null };
-  const selectedVanPosition = selectedTrip ? getVanPosition(selectedTrip, 0) : null;
+  const { start: routeStart, end: routeEnd } = selectedTrip
+    ? getRouteCoordinates(selectedTrip)
+    : { start: null, end: null };
 
   return (
     <LeafletMap center={mapCenter} zoom={selectedTrip ? 10 : 13}>
-      {/* Mostrar marcadores de vans */}
-      {!selectedTrip && vans && vans.map((van, index) => (
-        <VanMarker
-          key={index}
-          position={getVanPosition(van, index)}
-          vanInfo={van}
-          isSelected={false}
-          onClick={onVanClick}
-        />
-      ))}
+      {!selectedTrip &&
+        nearbyTrips?.map((trip) => (
+          <VanMarker
+            key={trip.id}
+            position={[
+              Number(trip.route.start_latitude),
+              Number(trip.route.start_longitude),
+            ]}
+            vanInfo={trip}
+            isSelected={false}
+            onClick={onVanClick}
+          />
+        ))}
 
-      {/* Mostrar rota e van selecionada */}
       {selectedTrip && (
         <>
           <RoutePolyline start={routeStart} end={routeEnd} color="#3B82F6" />
+
           <VanMarker
-            position={selectedVanPosition}
-            vanInfo={selectedTrip}
+            position={routeStart}
+            vanInfo={{ ...selectedTrip, point: "start" }}
+            isSelected={true}
+            onClick={onVanClick}
+          />
+
+          <VanMarker
+            position={routeEnd}
+            vanInfo={{ ...selectedTrip, point: "end" }}
             isSelected={true}
             onClick={onVanClick}
           />
