@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, LinearProgress } from '@mui/material';
-import { colors, borderRadius, transitions } from '../../../conf/designTokens';
+import { colors, borderRadius, transitions } from '../../../conf/theme';
 import RouteText from '../RouteText';
 
 export default function ProgressBar({ 

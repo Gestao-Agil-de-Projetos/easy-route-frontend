@@ -1,11 +1,10 @@
 import { Polyline, useMap } from 'react-leaflet';
 import { useEffect, useState } from 'react';
 import L from 'leaflet';
-import { fetchRoute } from '../../../api/routes';
 
 const RoutePolyline = ({ start, end, color = '#3B82F6' }) => {
   const map = useMap();
-  const [routePositions, setRoutePositions] = useState([]);
+  const [routePositions, setRoutePositions] = useState([start, end]);
 
   useEffect(() => {
     if (!start || !end) {
@@ -13,26 +12,12 @@ const RoutePolyline = ({ start, end, color = '#3B82F6' }) => {
       return;
     }
 
-    const loadRoute = async () => {
-      try {
-        const data = await fetchRoute(start, end);
-        
-        if (data.routes && data.routes.length > 0) {
-          const coords = data.routes[0].geometry.coordinates;
-          const positions = coords.map(coord => [coord[1], coord[0]]);
-          setRoutePositions(positions);
-          
-          const bounds = L.latLngBounds(positions);
-          map.fitBounds(bounds, { padding: [100, 100] });
-        }
-      } catch (error) {
-        setRoutePositions([start, end]);
-        const bounds = L.latLngBounds([start, end]);
-        map.fitBounds(bounds, { padding: [50, 50] });
-      }
-    };
-
-    loadRoute();
+    setRoutePositions([start, end]);
+    
+    if (map) {
+      const bounds = L.latLngBounds([start, end]);
+      map.fitBounds(bounds, { padding: [50, 50] });
+    }
   }, [start, end, map]);
 
   if (!routePositions || routePositions.length === 0) {

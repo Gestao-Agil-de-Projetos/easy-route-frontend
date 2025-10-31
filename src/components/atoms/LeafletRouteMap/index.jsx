@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { colors, borderRadius, shadows } from '../../../conf/designTokens';
+import { colors, borderRadius, shadows } from '../../../conf/theme';
 
 // Fix for default leaflet markers
 delete L.Icon.Default.prototype._getIconUrl;

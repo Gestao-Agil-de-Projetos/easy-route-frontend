@@ -271,3 +271,75 @@ export const theme = createTheme({
     },
   },
 });
+
+// Design Tokens exportáveis para usar em componentes
+export const colors = {
+  primary: theme.palette.primary,
+  secondary: theme.palette.secondary,
+  tertiary: theme.palette.tertiary,
+  success: theme.palette.success,
+  warning: theme.palette.warning,
+  error: theme.palette.error,
+  info: theme.palette.info,
+  neutral: theme.palette.neutral,
+  background: theme.palette.background,
+  text: theme.palette.text,
+  divider: theme.palette.divider,
+};
+
+export const borderRadius = {
+  xs: 8,
+  sm: 12,
+  md: 16,
+  lg: 24,
+  full: 9999,
+};
+
+export const spacing = {
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 24,
+  xxl: 32,
+};
+
+export const typography = {
+  fontFamily: theme.typography.fontFamily,
+  fontSize: {
+    xs: 12,
+    sm: 14,
+    base: 16,
+    lg: 18,
+    xl: 20,
+    '2xl': 24,
+  },
+  fontWeight: {
+    light: 300,
+    regular: 400,
+    medium: 500,
+    semibold: 600,
+    bold: 700,
+    extrabold: 800,
+  },
+};
+
+export const shadows = theme.shadows;
+
+export const transitions = {
+  duration: {
+    shortest: 150,
+    shorter: 200,
+    short: 250,
+    normal: 300,
+    complex: 375,
+    enteringScreen: 225,
+    leavingScreen: 195,
+  },
+  easing: {
+    easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
+    easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+    linear: 'linear',
+  },
+};

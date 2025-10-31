@@ -1,13 +1,21 @@
 import api from "./client";
 
 export const getBookings = async (status, token) => {
-  const res = await api.get("/bookings/", {
-    params: { status },
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return res.data;
+  try {
+    const res = await api.get("/bookings/", {
+      params: { status },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    // Se a API retornar 404, significa que não há bookings, retorna array vazio
+    if (error.response?.status === 404) {
+      return { success: false, data: [] };
+    }
+    throw error;
+  }
 };
 
 export const getBookingsByTrip = async (trip_id, token) => {
@@ -47,10 +55,18 @@ export const updateBooking = async (id, bookingData, token) => {
 };
 
 export const getLatestBookingWithoutAssessment = async (token) => {
-  const res = await api.get("/bookings/without-assessment", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return res.data;
+  try {
+    const res = await api.get("/bookings/without-assessment", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    // Se houver erro (400, 404, etc), retorna null ao invés de falhar
+    if (error.response?.status === 400 || error.response?.status === 404) {
+      return { success: false, data: null };
+    }
+    throw error;
+  }
 };

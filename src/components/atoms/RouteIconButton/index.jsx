@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import { colors, transitions } from '../../../conf/designTokens';
+import { colors, transitions } from '../../../conf/theme';
 
 export default function RouteIconButton({ 
   icon: Icon,

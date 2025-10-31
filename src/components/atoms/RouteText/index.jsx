@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import { colors, typography, transitions } from '../../../conf/designTokens';
+import { colors, typography, transitions } from '../../../conf/theme';
 
 export default function RouteText({
   text,

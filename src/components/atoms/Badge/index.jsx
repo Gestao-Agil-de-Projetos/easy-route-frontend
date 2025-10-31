@@ -1,90 +1,71 @@
 import React from 'react';
-import { Chip } from '@mui/material';
-import { colors, borderRadius, typography, transitions } from '../../../conf/designTokens';
+import { Box } from '@mui/material';
 
 export default function Badge({ 
   text, 
-  variant = 'default', // default, success, warning, error, info
-  size = 'medium', // small, medium, large
-  icon = null,
-  pulse = false,
-  bgColor,
-  textColor,
+  variant = 'default',
+  size = 'medium',
+  pulse = "false",
   sx = {},
   ...props 
 }) {
-  const variantStyles = {
+  const variants = {
     default: {
-      backgroundColor: bgColor || colors.neutral[100],
-      color: textColor || colors.neutral[700],
-      boxShadow: '0 2px 6px rgba(0,0,0,0.08)',
+      backgroundColor: '#F3F4F6',
+      color: '#374151',
     },
     success: {
-      backgroundColor: bgColor || colors.success.bg,
-      color: textColor || colors.success.text,
-      boxShadow: `0 2px 8px ${colors.success.main}20, inset 0 1px 0 rgba(255,255,255,0.5)`,
+      backgroundColor: '#D1FAE5',
+      color: '#065F46',
     },
     warning: {
-      backgroundColor: bgColor || colors.warning.bg,
-      color: textColor || colors.warning.text,
-      boxShadow: `0 2px 8px ${colors.warning.main}20, inset 0 1px 0 rgba(255,255,255,0.5)`,
+      backgroundColor: '#FEF3C7',
+      color: '#92400E',
     },
     error: {
-      backgroundColor: bgColor || colors.error.bg,
-      color: textColor || colors.error.text,
-      boxShadow: `0 2px 8px ${colors.error.main}20, inset 0 1px 0 rgba(255,255,255,0.5)`,
-    },
-    info: {
-      backgroundColor: bgColor || colors.info.bg,
-      color: textColor || colors.info.text,
-      boxShadow: `0 2px 8px ${colors.info.main}20, inset 0 1px 0 rgba(255,255,255,0.5)`,
+      backgroundColor: '#FEE2E2',
+      color: '#991B1B',
     },
   };
 
-  const sizeStyles = {
+  const sizes = {
     small: {
-      fontSize: typography.fontSize.xs,
-      height: '20px',
+      fontSize: '12px',
+      padding: '4px 12px',
     },
     medium: {
-      fontSize: typography.fontSize.sm,
-      height: '24px',
+      fontSize: '14px',
+      padding: '6px 16px',
     },
     large: {
-      fontSize: typography.fontSize.base,
-      height: '32px',
+      fontSize: '16px',
+      padding: '8px 20px',
     },
   };
 
-  const pulseAnimation = pulse ? {
-    '@keyframes pulse': {
-      '0%, 100%': { 
-        opacity: 1,
-        transform: 'scale(1)',
-      },
-      '50%': { 
-        opacity: 0.8,
-        transform: 'scale(1.05)',
-      },
+  const pulseAnimation = pulse === "true" ? {
+    '@keyframes badgePulse': {
+      '0%, 100%': { opacity: 1 },
+      '50%': { opacity: 0.6 },
     },
-    animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+    animation: 'badgePulse 2s ease-in-out infinite',
   } : {};
 
   return (
-    <Chip
-      label={text}
-      icon={icon}
-      size={size === 'large' ? 'medium' : 'small'}
+    <Box
       sx={{
-        borderRadius: borderRadius.full,
-        fontWeight: typography.fontWeight.semibold,
-        transition: `all ${transitions.duration.fast} ${transitions.easing.easeOut}`,
-        ...variantStyles[variant],
-        ...sizeStyles[size],
+        display: 'inline-flex',
+        alignItems: 'center',
+        borderRadius: '6px',
+        fontWeight: 600,
+        ...variants[variant],
+        ...sizes[size],
         ...pulseAnimation,
         ...sx,
       }}
       {...props}
-    />
+    >
+      {text}
+    </Box>
   );
 }

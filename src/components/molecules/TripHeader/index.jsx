@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { Schedule, CalendarToday } from '@mui/icons-material';
 import RouteText from '../../atoms/RouteText';
 import ArrowIcon from '../../atoms/ArrowIcon';
-import { colors } from '../../../conf/designTokens';
+import { colors } from '../../../conf/theme';
 
 export default function TripHeader({ 
   origin, 

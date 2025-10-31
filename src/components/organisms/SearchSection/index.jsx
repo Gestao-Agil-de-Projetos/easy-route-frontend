@@ -3,7 +3,6 @@ import SearchBar from '../../molecules/SearchBar';
 import DatePickerDialog from '../../atoms/DatePickerDialog';
 import SearchDropdown from '../../molecules/SearchDropdown';
 import { useState } from 'react';
-import { fetchLocationName } from '../../../api/routes';
 
 const SearchSection = ({ onSearchChange, availableTrips, onTripSelect }) => {
   const [fromValue, setFromValue] = useState('');
@@ -45,30 +44,41 @@ const SearchSection = ({ onSearchChange, availableTrips, onTripSelect }) => {
   };
 
   const handleFromLocationClick = () => {
+    // Integrar com API de geolocalização do navegador
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
-          
           try {
-            const data = await fetchLocationName(latitude, longitude);
-            const city = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality || 'Local atual';
-            
+            const response = await fetch(
+              `https://api.allorigins.win/get?url=${encodeURIComponent(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)}`
+            );
+            const data = await response.json();
+            const location = JSON.parse(data.contents);
+            const city = location.address?.city || location.address?.town || location.address?.county || 'Local Atual';
             setFromValue(city);
             setShowDropdown(true);
             onSearchChange && onSearchChange({ from: city, to: toValue, date: selectedDate });
           } catch (error) {
+            console.error('Erro ao buscar localização:', error);
             setFromValue('Local atual');
             setShowDropdown(true);
             onSearchChange && onSearchChange({ from: 'Local atual', to: toValue, date: selectedDate });
           }
         },
         (error) => {
-          alert('Não foi possível obter sua localização. Verifique as permissões do navegador.');
+          console.error('Erro ao obter geolocalização:', error);
+          // Fallback para "Local atual" se o usuário negar permissão
+          setFromValue('Local atual');
+          setShowDropdown(true);
+          onSearchChange && onSearchChange({ from: 'Local atual', to: toValue, date: selectedDate });
         }
       );
     } else {
-      alert('Geolocalização não é suportada pelo seu navegador.');
+      // Navegador não suporta geolocalização
+      setFromValue('Local atual');
+      setShowDropdown(true);
+      onSearchChange && onSearchChange({ from: 'Local atual', to: toValue, date: selectedDate });
     }
   };
 

@@ -87,7 +87,7 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
         </Box>
 
         {/* Last Trip Review - Static Container */}
-        {lastTrip && (
+        {lastTrip && lastTrip.from && (
           <Box
             sx={{
               backgroundColor: 'rgba(255, 255, 255, 0.85)',
@@ -142,13 +142,13 @@ const ExpandableReservations = ({ reservations, history, isExpanded, onToggle, l
 
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <RouteText sx={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', lineHeight: '20px', color: '#4B5563' }}>
-                  69
+                  {lastTrip.distance || '0'}
                 </RouteText>
                 <RouteText sx={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', lineHeight: '20px', color: '#6B7280' }}>
                   Km
                 </RouteText>
                 <RouteText sx={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', lineHeight: '20px', color: '#4B5563' }}>
-                  ~1h06
+                  ~{lastTrip.estimated_time || '0h00'}
                 </RouteText>
               </Box>
             </Box>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, CircularProgress } from '@mui/material';
-import { colors, borderRadius, typography, transitions } from '../../../conf/designTokens';
+import { colors, borderRadius, typography, transitions } from '../../../conf/theme';
 
 export default function RouteButton({ 
   children,

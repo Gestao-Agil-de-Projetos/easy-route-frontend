@@ -8,7 +8,6 @@ import ExpandableReservations from "../../organisms/ExpandableReservations";
 import {
   createBooking,
   getBookings,
-  getLatestBookingWithoutAssessment,
 } from "../../../api/booking";
 import { getTripsByCoordinates } from "../../../api/trip";
 import { useAuth } from "../../../hooks/useAuth";
@@ -89,59 +88,26 @@ const HomePage = () => {
       };
     };
 
-    const mapLastBookingToUI = (booking) => {
-      if (!booking?.trip?.start_time) return null;
-
-      const dateObj = new Date(booking.trip.start_time);
-      const hours = String(dateObj.getHours()).padStart(2, "0");
-
-      setShowLastTrip(true);
-
-      return {
-        from: booking.trip.route?.start_name || "",
-        to: booking.trip.route?.end_name || "",
-        date: `${String(dateObj.getDate()).padStart(2, "0")}/${String(
-          dateObj.getMonth() + 1
-        )} - ${hours}`,
-        driver: booking.trip.route.van.owner.name,
-        price: booking.trip?.price ? `R$ ${booking.trip.price}` : "R$ --",
-        distance: calcularDistanciaEmKm(
-          booking.trip.route.start_latitude,
-          booking.trip.route.start_longitude,
-          booking.trip.route.end_latitude,
-          booking.trip.route.end_longitude
-        ).toFixed(2),
-        estimated_time: calcularDuracao(
-          booking.trip.start_time,
-          booking.trip.estimated_end_time
-        ),
-      };
-    };
-
     const fetchReservations = async () => {
       try {
         const historyData = await getBookings("CANCELLED,FINISHED", token);
         const reservationData = await getBookings("PENDING,CONFIRMED", token);
 
-        const formattedHistory = (historyData.data || []).map((b) =>
-          mapBookingToUI(b, true)
-        );
-        const formattedReservations = (reservationData.data || []).map((b) =>
-          mapBookingToUI(b, false)
-        );
-
-        const lastTrip = await getLatestBookingWithoutAssessment(token);
-
-        let formattedLastTrip = null;
-        if (lastTrip?.data) {
-          formattedLastTrip = mapLastBookingToUI(lastTrip.data);
-        }
+        const formattedHistory = (historyData?.data || []).length > 0 
+          ? historyData.data.map((b) => mapBookingToUI(b, true))
+          : [];
+        const formattedReservations = (reservationData?.data || []).length > 0 
+          ? reservationData.data.map((b) => mapBookingToUI(b, false))
+          : [];
 
         setHistory(formattedHistory || []);
         setReservation(formattedReservations || []);
-        setLastTrip(formattedLastTrip || {});
+        setLastTrip({});
       } catch (err) {
-        console.error("Erro ao buscar histórico:", err);
+        // Silenciosamente falha se houver erro, mantém arrays vazios
+        setHistory([]);
+        setReservation([]);
+        setLastTrip({});
       }
     };
 

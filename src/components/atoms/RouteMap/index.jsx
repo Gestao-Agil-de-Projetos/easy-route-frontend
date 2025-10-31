@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { LocationOn, TripOrigin } from '@mui/icons-material';
-import { colors, borderRadius, spacing, shadows } from '../../../conf/designTokens';
+import { colors, borderRadius, spacing, shadows } from '../../../conf/theme';
 
 export default function RouteMap({ origin, destination, sx = {} }) {
   return (

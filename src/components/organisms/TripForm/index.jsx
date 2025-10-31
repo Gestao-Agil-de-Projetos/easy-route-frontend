@@ -17,15 +17,15 @@ export default function TripForm({
   };
 
   return (
-    <RouteCard sx={{ mb: 3, p: { xs: 1.5, sm: 2, md: 2.5 } }}>
+    <RouteCard sx={{ mb: 3, p: { xs: 2.5, sm: 3, md: 3.5 } }}>
       <RouteText 
         text="Registrar Nova Viagem" 
         sx={{ 
-          fontWeight: 800, 
-          mb: 3, 
-          fontSize: { xs: '18px', sm: '20px' }, 
-          color: '#1F2937', 
-          letterSpacing: 0.5 
+          fontWeight: 900, 
+          mb: 3.5, 
+          fontSize: { xs: '20px', sm: '24px' }, 
+          color: '#0F172A', 
+          letterSpacing: -0.3
         }} 
       />
       <Box component="form" autoComplete="off" sx={{ width: '100%' }}>
@@ -33,9 +33,9 @@ export default function TripForm({
           sx={{ 
             display: 'grid', 
             gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', lg: 'repeat(5, 1fr)' }, 
-            gap: { xs: 1.2, sm: 1.5, md: 2 }, 
+            gap: { xs: 1.5, sm: 2, md: 2.5 }, 
             alignItems: 'flex-start', 
-            mb: 2.2 
+            mb: 3 
           }}
         >
           <TextField 
@@ -47,7 +47,20 @@ export default function TripForm({
             error={!!errors.origin} 
             helperText={errors.origin} 
             size="small" 
-            sx={{ '& .MuiOutlinedInput-root': { borderRadius: '10px', height: 48, fontSize: '15px' } }} 
+            sx={{ 
+              '& .MuiOutlinedInput-root': { 
+                borderRadius: '12px', 
+                height: 52, 
+                fontSize: '15px',
+                backgroundColor: '#f9fafb',
+                '&:hover': {
+                  backgroundColor: '#f3f4f6'
+                },
+                '&.Mui-focused': {
+                  backgroundColor: '#ffffff'
+                }
+              } 
+            }} 
           />
           <TextField 
             fullWidth 
@@ -58,7 +71,20 @@ export default function TripForm({
             error={!!errors.destination} 
             helperText={errors.destination} 
             size="small" 
-            sx={{ '& .MuiOutlinedInput-root': { borderRadius: '10px', height: 48, fontSize: '15px' } }} 
+            sx={{ 
+              '& .MuiOutlinedInput-root': { 
+                borderRadius: '12px', 
+                height: 52, 
+                fontSize: '15px',
+                backgroundColor: '#f9fafb',
+                '&:hover': {
+                  backgroundColor: '#f3f4f6'
+                },
+                '&.Mui-focused': {
+                  backgroundColor: '#ffffff'
+                }
+              } 
+            }} 
           />
           <TextField 
             fullWidth 
@@ -69,7 +95,20 @@ export default function TripForm({
             error={!!errors.capacity} 
             helperText={errors.capacity} 
             size="small" 
-            sx={{ '& .MuiOutlinedInput-root': { borderRadius: '10px', height: 48, fontSize: '15px' } }} 
+            sx={{ 
+              '& .MuiOutlinedInput-root': { 
+                borderRadius: '12px', 
+                height: 52, 
+                fontSize: '15px',
+                backgroundColor: '#f9fafb',
+                '&:hover': {
+                  backgroundColor: '#f3f4f6'
+                },
+                '&.Mui-focused': {
+                  backgroundColor: '#ffffff'
+                }
+              } 
+            }} 
           />
           <TextField 
             fullWidth 
@@ -81,7 +120,20 @@ export default function TripForm({
             helperText={errors.time} 
             size="small" 
             InputLabelProps={{ shrink: true }} 
-            sx={{ '& .MuiOutlinedInput-root': { borderRadius: '10px', height: 48, fontSize: '15px' } }} 
+            sx={{ 
+              '& .MuiOutlinedInput-root': { 
+                borderRadius: '12px', 
+                height: 52, 
+                fontSize: '15px',
+                backgroundColor: '#f9fafb',
+                '&:hover': {
+                  backgroundColor: '#f3f4f6'
+                },
+                '&.Mui-focused': {
+                  backgroundColor: '#ffffff'
+                }
+              } 
+            }} 
           />
           <FormControl fullWidth size="small" error={!!errors.vehicle}>
             <InputLabel>Veículo</InputLabel>
@@ -89,7 +141,18 @@ export default function TripForm({
               value={tripData.vehicle || ''} 
               onChange={(e) => handleChange('vehicle', e.target.value)} 
               label="Veículo" 
-              sx={{ borderRadius: '10px', height: 48, fontSize: '15px' }}
+              sx={{ 
+                borderRadius: '12px', 
+                height: 52, 
+                fontSize: '15px',
+                backgroundColor: '#f9fafb',
+                '&:hover': {
+                  backgroundColor: '#f3f4f6'
+                },
+                '&.Mui-focused': {
+                  backgroundColor: '#ffffff'
+                }
+              }}
             >
               <MenuItem value="" disabled>Selecione um veículo</MenuItem>
               {vehicles.map(v => (
@@ -108,17 +171,18 @@ export default function TripForm({
             sx={{ 
               backgroundColor: theme.palette.tertiary.main, 
               width: '100%', 
-              maxWidth: 360, 
-              height: 52, 
-              borderRadius: '12px', 
-              fontWeight: 800, 
+              maxWidth: 380, 
+              height: 56, 
+              borderRadius: '14px', 
+              fontWeight: 900, 
               fontSize: { xs: '16px', sm: '18px' }, 
               letterSpacing: 1.2, 
-              boxShadow: '0 4px 12px rgba(5,150,105,0.15)', 
+              boxShadow: '0 4px 16px rgba(5,150,105,0.2)', 
               textTransform: 'uppercase', 
               '&:hover': { 
                 backgroundColor: theme.palette.tertiary.dark, 
-                boxShadow: '0 6px 16px rgba(5,150,105,0.25)' 
+                boxShadow: '0 8px 28px rgba(5,150,105,0.35)',
+                transform: 'translateY(-2px)'
               }, 
               '&:disabled': { 
                 backgroundColor: '#D1D5DB', 
