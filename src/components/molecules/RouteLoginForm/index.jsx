@@ -22,17 +22,16 @@ export default function RouteLoginForm() {
   });
 
   return (
-    <>
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        validationSchema={loginSchema}
-        onSubmit={async (values, { setSubmitting }) => {
-          try {
-            const data = await login(values.email, values.password);
+    <Formik
+      initialValues={{ email: "", password: "" }}
+      validationSchema={loginSchema}
+      onSubmit={async (values, { setSubmitting }) => {
+        try {
+          const response = await login(values.email, values.password);
 
-            loginUser(data.data.token);
+          loginUser(response.data.token);
 
-            const decoded = jwtDecode(data.data.token);
+          const decoded = jwtDecode(response.data.token);
 
             if (decoded.role === "PASSENGER") {
               navigate("/home");
