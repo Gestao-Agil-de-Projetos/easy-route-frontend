@@ -129,7 +129,6 @@ export default function HistoryTripCard({ trip, isExpanded, onToggle }) {
               color: colors.neutral[700],
               fontWeight: 600,
               fontSize: { xs: '12px', sm: '13px' },
-              fontSize: '13px',
             }}
           />
         </Box>
