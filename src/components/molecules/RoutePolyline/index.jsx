@@ -1,6 +1,7 @@
 import { Polyline, useMap } from 'react-leaflet';
 import { useEffect, useState } from 'react';
 import L from 'leaflet';
+import { fetchRoute } from '../../../api/routes';
 
 const RoutePolyline = ({ start, end, color = '#3B82F6' }) => {
   const map = useMap();
@@ -12,12 +13,9 @@ const RoutePolyline = ({ start, end, color = '#3B82F6' }) => {
       return;
     }
 
-    const fetchRoute = async () => {
+    const loadRoute = async () => {
       try {
-        const response = await fetch(
-          `https://router.project-osrm.org/route/v1/driving/${start[1]},${start[0]};${end[1]},${end[0]}?overview=full&geometries=geojson`
-        );
-        const data = await response.json();
+        const data = await fetchRoute(start, end);
         
         if (data.routes && data.routes.length > 0) {
           const coords = data.routes[0].geometry.coordinates;
@@ -28,14 +26,13 @@ const RoutePolyline = ({ start, end, color = '#3B82F6' }) => {
           map.fitBounds(bounds, { padding: [100, 100] });
         }
       } catch (error) {
-        console.error('Erro ao buscar rota:', error);
         setRoutePositions([start, end]);
         const bounds = L.latLngBounds([start, end]);
         map.fitBounds(bounds, { padding: [50, 50] });
       }
     };
 
-    fetchRoute();
+    loadRoute();
   }, [start, end, map]);
 
   if (!routePositions || routePositions.length === 0) {
@@ -49,6 +46,7 @@ const RoutePolyline = ({ start, end, color = '#3B82F6' }) => {
         color: color,
         weight: 5,
         opacity: 0.8,
+        dashArray: '10, 10',
         lineCap: 'round',
       }}
     />
