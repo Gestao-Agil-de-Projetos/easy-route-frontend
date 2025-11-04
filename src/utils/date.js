@@ -37,7 +37,7 @@ export function toISODate(date) {
   return date.toISOString().split("T")[0];
 }
 
-export function formatarHora(dateInput) {
+export function formatHour(dateInput) {
   const date = new Date(dateInput);
   if (isNaN(date)) return "--";
   const horas = String(date.getHours()).padStart(2, "0");
@@ -45,7 +45,7 @@ export function formatarHora(dateInput) {
   return `${horas}:${minutos}`;
 }
 
-export function calcularDuracao(start_time, estimated_end_time) {
+export function calculateDuration(start_time, estimated_end_time) {
   const start = new Date(start_time);
   const end = new Date(estimated_end_time);
 

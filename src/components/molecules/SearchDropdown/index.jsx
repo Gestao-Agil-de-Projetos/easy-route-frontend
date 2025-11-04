@@ -1,7 +1,7 @@
 import { Box, Paper, Divider, Typography } from "@mui/material";
 import { Clock, User } from "lucide-react";
 import RouteText from "../../atoms/RouteText";
-import { calcularDuracao, formatarHora } from "../../../utils/date";
+import { calculateDuration, formatHour } from "../../../utils/date";
 
 const SearchDropdown = ({ trips, onTripSelect, isVisible }) => {
   if (!isVisible || !trips || trips.length === 0) {
@@ -32,8 +32,8 @@ const SearchDropdown = ({ trips, onTripSelect, isVisible }) => {
       }}
     >
       {trips.map((trip, index) => {
-        const time = formatarHora(trip?.start_time);
-        const duration = calcularDuracao(
+        const time = formatHour(trip?.start_time);
+        const duration = calculateDuration(
           trip?.start_time,
           trip?.estimated_end_time
         );

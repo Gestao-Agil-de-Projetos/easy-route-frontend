@@ -14,8 +14,8 @@ import { getTripsByCoordinates } from "../../../api/trip";
 import { useAuth } from "../../../hooks/useAuth";
 import RouteSnackBar from "../../atoms/RouteSnackBar";
 import { jwtDecode } from "jwt-decode";
-import { calcularDistanciaEmKm } from "../../../utils";
-import { calcularDuracao } from "../../../utils/date";
+import { calculateDistanceInKm } from "../../../utils";
+import { calculateDuration } from "../../../utils/date";
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState({
@@ -115,13 +115,13 @@ const HomePage = () => {
         )} - ${hours}`,
         driver: booking.trip.route.van.owner.name,
         price: booking.trip?.price ? `R$ ${booking.trip.price}` : "R$ --",
-        distance: calcularDistanciaEmKm(
+        distance: calculateDistanceInKm(
           booking.trip.route.start_latitude,
           booking.trip.route.start_longitude,
           booking.trip.route.end_latitude,
           booking.trip.route.end_longitude
         ).toFixed(2),
-        estimated_time: calcularDuracao(
+        estimated_time: calculateDuration(
           booking.trip.start_time,
           booking.trip.estimated_end_time
         ),

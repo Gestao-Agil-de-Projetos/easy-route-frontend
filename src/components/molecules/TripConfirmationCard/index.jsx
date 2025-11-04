@@ -9,8 +9,8 @@ import {
 import { User, Clock, MapPin, CreditCard, X, Users } from "lucide-react";
 import { useState } from "react";
 import RouteText from "../../atoms/RouteText";
-import { calcularDistanciaEmKm } from "../../../utils";
-import { calcularDuracao } from "../../../utils/date";
+import { calculateDistanceInKm } from "../../../utils";
+import { calculateDuration } from "../../../utils/date";
 
 const TripConfirmationCard = ({ trip, onConfirm, onCancel }) => {
   const [paymentMethod, setPaymentMethod] = useState("pix");
@@ -188,14 +188,14 @@ const TripConfirmationCard = ({ trip, onConfirm, onCancel }) => {
             <RouteText
               sx={{ fontWeight: 600, fontSize: "16px", color: "#1F2937" }}
             >
-              {calcularDistanciaEmKm(
+              {calculateDistanceInKm(
                 trip.route.start_latitude,
                 trip.route.start_longitude,
                 trip.route.end_latitude,
                 trip.route.end_longitude
               ).toFixed(2)}
               {" km "}-{" "}
-              {calcularDuracao(trip.start_time, trip.estimated_end_time)}
+              {calculateDuration(trip.start_time, trip.estimated_end_time)}
             </RouteText>
           </Box>
         </Box>
