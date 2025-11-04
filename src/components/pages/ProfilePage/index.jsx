@@ -98,7 +98,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', width: '100vw', maxWidth: '100vw', overflowX: 'hidden', bgcolor: colors.neutral[50] }}>
+    <Box sx={{ minHeight: '100vh', width: '100%', maxWidth: '100%', overflowX: 'hidden', bgcolor: colors.neutral[50] }}>
       <Header />
 
       <ProfileHeroBanner
@@ -123,7 +123,7 @@ const ProfilePage = () => {
         flex: 1,
         px: { xs: 1.5, sm: 2, md: 3 },
         py: { xs: 2, sm: 3, md: 4 },
-        maxWidth: { xs: '100vw', sm: '100%', md: '1280px' },
+        maxWidth: { xs: '100%', sm: '100%', md: '1280px' },
         mx: 'auto',
         width: '100%',
         overflowX: 'hidden',
