@@ -29,7 +29,7 @@ export function AuthProvider({ children }) {
       setToken(token);
       localStorage.setItem("token", token);
     } catch (err) {
-      console.error("Erro ao decodificar token:", err);
+      setUser(null);
     }
   };
 

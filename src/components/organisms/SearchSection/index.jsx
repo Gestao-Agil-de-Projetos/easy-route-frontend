@@ -44,7 +44,6 @@ const SearchSection = ({ onSearchChange, availableTrips, onTripSelect }) => {
   };
 
   const handleFromLocationClick = () => {
-    // Integrar com API de geolocalização do navegador
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
@@ -60,22 +59,18 @@ const SearchSection = ({ onSearchChange, availableTrips, onTripSelect }) => {
             setShowDropdown(true);
             onSearchChange && onSearchChange({ from: city, to: toValue, date: selectedDate });
           } catch (error) {
-            console.error('Erro ao buscar localização:', error);
             setFromValue('Local atual');
             setShowDropdown(true);
             onSearchChange && onSearchChange({ from: 'Local atual', to: toValue, date: selectedDate });
           }
         },
         (error) => {
-          console.error('Erro ao obter geolocalização:', error);
-          // Fallback para "Local atual" se o usuário negar permissão
           setFromValue('Local atual');
           setShowDropdown(true);
           onSearchChange && onSearchChange({ from: 'Local atual', to: toValue, date: selectedDate });
         }
       );
     } else {
-      // Navegador não suporta geolocalização
       setFromValue('Local atual');
       setShowDropdown(true);
       onSearchChange && onSearchChange({ from: 'Local atual', to: toValue, date: selectedDate });

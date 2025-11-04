@@ -50,7 +50,6 @@ const HomePage = () => {
       const trips = await getTripsByCoordinates(from, to, date, token);
       setAvailableTrips(trips.data || []);
     } catch (error) {
-      console.error("Erro ao buscar viagens:", error);
       setAvailableTrips([]);
     }
   };
@@ -159,7 +158,6 @@ const HomePage = () => {
           setUserLocation([latitude, longitude]);
         },
         (error) => {
-          console.error("Erro ao obter localização:", error);
           setUserLocation([-14.8631, -40.8444]);
         }
       );

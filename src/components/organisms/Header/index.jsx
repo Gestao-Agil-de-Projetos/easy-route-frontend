@@ -1,6 +1,6 @@
 import { Box, Menu, MenuItem, useMediaQuery, useTheme } from '@mui/material';
 import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import MenuButton from '../../atoms/MenuButton';
 import RouteText from '../../atoms/RouteText';
@@ -11,9 +11,11 @@ const Header = ({ onLogoClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { logoutUser } = useContext(AuthContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isHome = location.pathname === '/home';
 
   const handleMenuClick = (event) => {
     if (isMobile) {
@@ -41,6 +43,8 @@ const Header = ({ onLogoClick }) => {
   const handleLogoClick = () => {
     if (onLogoClick) {
       onLogoClick();
+    } else {
+      navigate('/home');
     }
   };
 
@@ -50,6 +54,14 @@ const Header = ({ onLogoClick }) => {
     { label: 'Histórico', path: '/historico' },
     { label: 'Rotas Salvas', path: '/rotas-salvas' },
   ];
+
+  const displayMenuItems = isHome 
+    ? menuItems 
+    : menuItems
+        .filter(item => item.path !== location.pathname)
+        .map(item => item)
+        .concat(location.pathname !== '/home' ? [{ label: 'Início', path: '/home' }] : [])
+        .reverse();
 
   return (
     <Box
@@ -145,7 +157,7 @@ const Header = ({ onLogoClick }) => {
             },
           }}
         >
-          {menuItems.map((item) => (
+          {displayMenuItems.map((item) => (
             <MenuItem
               key={item.label}
               onClick={() => {
@@ -189,6 +201,7 @@ const Header = ({ onLogoClick }) => {
           open={sidebarOpen}
           onClose={handleSidebarClose}
           onLogout={handleLogout}
+          isHome={isHome}
         />
       )}
     </Box>

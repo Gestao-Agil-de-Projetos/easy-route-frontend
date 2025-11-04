@@ -4,6 +4,7 @@ import LoginPage from "./components/pages/LoginPage/index.jsx";
 import RegisterPage from "./components/pages/RegisterPage/index.jsx";
 import HomePage from "./components/pages/HomePage";
 import OwnerPage from "./components/pages/OwnerPage";
+import ProfilePage from "./components/pages/ProfilePage/index.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import "./styles/App.css";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
@@ -30,6 +31,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={["OWNER"]}>
                 <OwnerPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/perfil"
+            element={
+              <ProtectedRoute allowedRoles={["PASSENGER", "OWNER"]}>
+                <ProfilePage />
               </ProtectedRoute>
             }
           />

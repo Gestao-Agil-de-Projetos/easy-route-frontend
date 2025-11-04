@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Drawer, Button, useMediaQuery } from '@mui/material';
 import { ExitToApp } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { colors } from '../../../conf/theme';
 import RouteText from '../../atoms/RouteText';
 import RouteDivider from '../../atoms/RouteDivider';
@@ -14,16 +15,27 @@ export default function HomeSidebar({
   userEmail = 'passageiro@email.com',
   userInitials = 'PA',
   onLogout,
+  isHome = false,
 }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const menuItems = [
-    { label: 'Meu Perfil', disabled: true },
-    { label: 'Minhas Reservas', disabled: true },
-    { label: 'Histórico', disabled: true },
-    { label: 'Rotas Salvas', disabled: true },
+    { label: 'Meu Perfil', path: '/perfil' },
+    { label: 'Minhas Reservas', path: '/reservas' },
+    { label: 'Histórico', path: '/historico' },
+    { label: 'Rotas Salvas', path: '/rotas-salvas' },
   ];
+
+  const displayMenuItems = isHome 
+    ? menuItems 
+    : menuItems
+        .filter(item => item.path !== location.pathname)
+        .map(item => item)
+        .concat(location.pathname !== '/home' ? [{ label: 'Início', path: '/home' }] : [])
+        .reverse();
 
   const handleLogout = () => {
     onClose();
@@ -51,7 +63,7 @@ export default function HomeSidebar({
 
       {/* Menu Items */}
       <Box sx={{ flex: 1, py: 2, px: 1 }}>
-        {menuItems.map((item) => (
+        {displayMenuItems.map((item) => (
           <Box
             key={item.label}
             sx={{
@@ -59,17 +71,19 @@ export default function HomeSidebar({
               px: 2,
               mb: 0.5,
               borderRadius: '6px',
-              cursor: item.disabled ? 'not-allowed' : 'pointer',
+              cursor: 'pointer',
               transition: 'all 0.2s ease',
               display: 'flex',
               alignItems: 'center',
               gap: 1,
-              opacity: item.disabled ? 0.5 : 1,
               '&:hover': {
-                backgroundColor: item.disabled ? 'transparent' : colors.neutral[100],
+                backgroundColor: colors.neutral[100],
               },
             }}
-            onClick={() => !item.disabled && onClose()}
+            onClick={() => {
+              navigate(item.path);
+              onClose();
+            }}
           >
             <RouteText
               text={item.label}
