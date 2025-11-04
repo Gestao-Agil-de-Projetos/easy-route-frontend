@@ -1,27 +1,40 @@
-import { Box, Menu, MenuItem } from '@mui/material';
+import { Box, Menu, MenuItem, useMediaQuery, useTheme } from '@mui/material';
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import MenuButton from '../../atoms/MenuButton';
 import RouteText from '../../atoms/RouteText';
+import HomeSidebar from '../HomeSidebar';
 import { MapIcon } from 'lucide-react';
 
 const Header = ({ onLogoClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const { logoutUser } = useContext(AuthContext);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    if (isMobile) {
+      setSidebarOpen(true);
+    } else {
+      setAnchorEl(event.currentTarget);
+    }
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
 
+  const handleSidebarClose = () => {
+    setSidebarOpen(false);
+  };
+
   const handleLogout = () => {
     logoutUser();
     handleMenuClose();
+    handleSidebarClose();
     navigate('/login', { replace: true });
   };
 
@@ -104,69 +117,80 @@ const Header = ({ onLogoClick }) => {
       {/* Right Side Buttons */}
       <MenuButton onClick={handleMenuClick} />
 
-      {/* Dropdown Menu */}
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
-        PaperProps={{
-          sx: {
-            marginTop: '8px',
-            marginRight: { xs: '0px', sm: '0px' },
-            marginLeft: { xs: '-12px', sm: '-16px' },
-            backgroundColor: '#FFFFFF',
-            boxShadow: '0px 8px 10px -6px rgba(0, 0, 0, 0.1), 0px 20px 25px -5px rgba(0, 0, 0, 0.1)',
-            borderRadius: '8px',
-            minWidth: '200px',
-            maxWidth: '90vw',
-          },
-        }}
-        transformOrigin={{ horizontal: 'left', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-        slotProps={{
-          paper: {
-            style: {
-              position: 'fixed',
+      {/* Desktop Dropdown Menu */}
+      {!isMobile && (
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+          PaperProps={{
+            sx: {
+              marginTop: '8px',
+              marginRight: { xs: '0px', sm: '0px' },
+              marginLeft: { xs: '-12px', sm: '-16px' },
+              backgroundColor: '#FFFFFF',
+              boxShadow: '0px 8px 10px -6px rgba(0, 0, 0, 0.1), 0px 20px 25px -5px rgba(0, 0, 0, 0.1)',
+              borderRadius: '8px',
+              minWidth: '200px',
+              maxWidth: '90vw',
             },
-          },
-        }}
-      >
-        {menuItems.map((item) => (
+          }}
+          transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+          slotProps={{
+            paper: {
+              style: {
+                position: 'fixed',
+              },
+            },
+          }}
+        >
+          {menuItems.map((item) => (
+            <MenuItem
+              key={item.label}
+              onClick={() => {
+                navigate(item.path);
+                handleMenuClose();
+              }}
+              sx={{
+                padding: '12px 16px',
+                fontFamily: 'Inter',
+                fontSize: '16px',
+                color: '#374151',
+                '&:hover': {
+                  backgroundColor: '#F3F4F6',
+                },
+              }}
+            >
+              {item.label}
+            </MenuItem>
+          ))}
           <MenuItem
-            key={item.label}
-            onClick={() => {
-              navigate(item.path);
-              handleMenuClose();
-            }}
+            onClick={handleLogout}
             sx={{
               padding: '12px 16px',
               fontFamily: 'Inter',
               fontSize: '16px',
-              color: '#374151',
+              color: '#DC2626',
+              borderTop: '1px solid #E5E7EB',
               '&:hover': {
-                backgroundColor: '#F3F4F6',
+                backgroundColor: '#FEE2E2',
               },
             }}
           >
-            {item.label}
+            Sair
           </MenuItem>
-        ))}
-        <MenuItem
-          onClick={handleLogout}
-          sx={{
-            padding: '12px 16px',
-            fontFamily: 'Inter',
-            fontSize: '16px',
-            color: '#DC2626',
-            borderTop: '1px solid #E5E7EB',
-            '&:hover': {
-              backgroundColor: '#FEE2E2',
-            },
-          }}
-        >
-          Sair
-        </MenuItem>
-      </Menu>
+        </Menu>
+      )}
+
+      {/* Mobile Sidebar */}
+      {isMobile && (
+        <HomeSidebar
+          open={sidebarOpen}
+          onClose={handleSidebarClose}
+          onLogout={handleLogout}
+        />
+      )}
     </Box>
   );
 };
