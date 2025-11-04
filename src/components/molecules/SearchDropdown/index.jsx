@@ -1,6 +1,7 @@
 import { Box, Paper, Divider, Typography } from "@mui/material";
 import { Clock, User } from "lucide-react";
 import RouteText from "../../atoms/RouteText";
+import { calcularDuracao, formatarHora } from "../../../utils/date";
 
 const SearchDropdown = ({ trips, onTripSelect, isVisible }) => {
   if (!isVisible || !trips || trips.length === 0) {

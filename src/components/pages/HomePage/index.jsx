@@ -40,6 +40,14 @@ const HomePage = () => {
     severity: "success",
   });
 
+  const showSnack = (message, severity = "info") => {
+    setSnack({
+      open: true,
+      message,
+      severity,
+    });
+  };
+
   const handleSearchChange = async (query) => {
     setSearchQuery(query);
 
@@ -86,6 +94,8 @@ const HomePage = () => {
           isHistory && booking.status === "FINISHED"
             ? "Finalizada"
             : "Cancelada",
+        rating: booking?.assessment?.rating ?? 0,
+        feedback: booking?.assessment?.feedback ?? "",
       };
     };
 
@@ -115,6 +125,8 @@ const HomePage = () => {
           booking.trip.start_time,
           booking.trip.estimated_end_time
         ),
+        trip_id: booking.trip.id,
+        booking_id: booking.booking_id,
       };
     };
 
@@ -260,6 +272,8 @@ const HomePage = () => {
             onToggle={() => setReservationsExpanded(!reservationsExpanded)}
             lastTrip={showLastTrip ? lastTrip : null}
             onReviewComplete={handleReviewComplete}
+            token={token}
+            onShowSnack={showSnack}
           />
         </Box>
       )}

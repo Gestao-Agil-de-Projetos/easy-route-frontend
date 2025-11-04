@@ -16,6 +16,8 @@ const ExpandableReservations = ({
   onToggle,
   lastTrip,
   onReviewComplete,
+  token,
+  onShowSnack
 }) => {
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [showReviewDialog, setShowReviewDialog] = useState(false);
@@ -50,9 +52,10 @@ const ExpandableReservations = ({
     onReviewComplete && onReviewComplete({ rating, text: "" });
   };
 
-  const handleReviewSubmit = (review) => {
+  const handleReviewSubmit = () => {
+    onReviewComplete && onReviewComplete();
     setShowReviewTextDialog(false);
-    onReviewComplete && onReviewComplete(review);
+    setShowPrompt(false);
   };
 
   return (
@@ -436,7 +439,9 @@ const ExpandableReservations = ({
         onClose={() => setShowReviewTextDialog(false)}
         rating={rating}
         tripInfo={lastTrip}
-        onSubmit={handleReviewSubmit}
+        token={token}
+        onSuccess={handleReviewSubmit}
+        onShowSnack={onShowSnack}
       />
 
       {selectedTrip && (
@@ -449,6 +454,8 @@ const ExpandableReservations = ({
             to: selectedTrip.to,
             date: selectedTrip.date,
             price: selectedTrip.price,
+            rating: selectedTrip.rating,
+            feedback: selectedTrip.feedback,
           }}
         />
       )}
