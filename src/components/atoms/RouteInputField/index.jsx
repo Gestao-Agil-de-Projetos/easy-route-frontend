@@ -3,29 +3,25 @@ import { TextField, InputAdornment } from "@mui/material";
 import EyeToggle from "../RouteEyeToggle";
 import { theme } from "../../../conf/theme";
 
-export default function RouteInputField(props) {
+export default function RouteInputField({
+  field,
+  form,
+  label,
+  type,
+  placeholder,
+  ...props
+}) {
   const [visible, setVisible] = useState(false);
-  const { field, form, label, type, placeholder, value, onChange, ...rest } = props;
   const isPassword = type === "password";
-
-  // Se vier field/form (Formik), usa o modo Formik. Senão, usa value/onChange controlado.
-  let error = false;
-  let helperText = '';
-  let inputProps = {};
-  if (field && form) {
-    error = form.touched[field.name] && Boolean(form.errors[field.name]);
-    helperText = form.touched[field.name] && form.errors[field.name];
-    inputProps = { ...field };
-  } else {
-    inputProps = { value, onChange };
-  }
+  const error = form.touched[field.name] && Boolean(form.errors[field.name]);
+  const helperText = form.touched[field.name] && form.errors[field.name];
 
   return (
     <TextField
-      {...inputProps}
-      {...rest}
+      {...field}
+      {...props}
       label={label}
-      type={isPassword && !visible ? "password" : type || "text"}
+      type={isPassword && !visible ? "password" : "text"}
       placeholder={placeholder}
       variant="outlined"
       fullWidth
