@@ -19,7 +19,7 @@ import { getAllVans, createVan, deleteVan } from '../../../api/van';
 import { createTrip, getTripsByOwner, deleteTrip } from '../../../api/trip';
 
 export default function OwnerPage() {
-  const { logoutUser, token } = useContext(AuthContext);
+  const { logoutUser, token, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const muiTheme = useTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
@@ -58,12 +58,6 @@ export default function OwnerPage() {
     if (isMobile) setMobileOpen(false);
   };
 
-  useEffect(() => {
-    if (!token) return;
-    loadVehicles();
-    loadTrips();
-  }, [token, loadVehicles, loadTrips]);
-
   const loadVehicles = useCallback(async () => {
     try {
       const res = await getAllVans(token);
@@ -75,9 +69,9 @@ export default function OwnerPage() {
 
   const loadTrips = useCallback(async () => {
     try {
-      const activeRes = await getTripsByOwner('ATIVA', token);
-      const reservedRes = await getTripsByOwner('AGENDADA', token);
-      const historyRes = await getTripsByOwner('FINALIZADA', token);
+      const activeRes = await getTripsByOwner('ONGOING', token);
+      const reservedRes = await getTripsByOwner('SCHEDULED', token);
+      const historyRes = await getTripsByOwner('FINISHED', token);
       if (activeRes.success) setActiveTrips(activeRes.data || []);
       if (reservedRes.success) setReservationTrips(reservedRes.data || []);
       if (historyRes.success) setHistoryTrips(historyRes.data || []);
@@ -85,6 +79,12 @@ export default function OwnerPage() {
       showNotification('Erro ao carregar viagens', 'error');
     }
   }, [token, showNotification]);
+
+  useEffect(() => {
+    if (!token) return;
+    loadVehicles();
+    loadTrips();
+  }, [token, loadVehicles, loadTrips]);
 
   const validateVehicle = () => {
     const errors = {};
@@ -216,11 +216,11 @@ export default function OwnerPage() {
           </IconButton>
         )}
 
-        {!isMobile && <OwnerSidebar activeTab={tab} onTabChange={handleTabChange} onLogout={handleLogout} />}
+        {!isMobile && <OwnerSidebar activeTab={tab} onTabChange={handleTabChange} onLogout={handleLogout} userName={user?.name} userEmail={user?.email} />}
 
         {isMobile && (
           <Drawer variant="temporary" open={mobileOpen} onClose={handleDrawerToggle} sx={{ '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 260 } }}>
-            <OwnerSidebar activeTab={tab} onTabChange={handleTabChange} onLogout={handleLogout} />
+            <OwnerSidebar activeTab={tab} onTabChange={handleTabChange} onLogout={handleLogout} userName={user?.name} userEmail={user?.email} />
           </Drawer>
         )}
 
