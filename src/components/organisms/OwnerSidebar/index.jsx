@@ -9,11 +9,21 @@ import RouteDivider from '../../atoms/RouteDivider';
 export default function OwnerSidebar({ 
   activeTab, 
   onTabChange, 
-  userName = 'Pedro Tigre', 
-  userEmail = 'pedro.tigre@email.com',
+  userName,
+  userEmail,
   userInitials = 'PT',
   onLogout 
 }) {
+  const getInitials = (name) => {
+    if (!name) return userInitials;
+    const parts = name.split(' ');
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  };
+
+  const initials = getInitials(userName);
   return (
     <Box 
       sx={{ 
@@ -29,7 +39,7 @@ export default function OwnerSidebar({
         zIndex: 1000 
       }}
     >
-      <UserProfile userName={userName} userEmail={userEmail} userInitials={userInitials} />
+      <UserProfile userName={userName} userEmail={userEmail} userInitials={initials} />
       
       <RouteDivider />
       
@@ -65,7 +75,6 @@ export default function OwnerSidebar({
         <Tab icon={<History />} iconPosition="start" label="Histórico" />
       </Tabs>
 
-      {/* Logout Button */}
       <Box sx={{ p: 2, mt: 'auto', borderTop: '1.5px solid #E5E7EB' }}>
         <Button 
           variant="outlined" 
