@@ -61,17 +61,24 @@ export const getTripsByCoordinates = async (
   return res.data;
 };
 
-export const getTripsByOwner = async (status) => {
-  const res = await api.get("/trips/by-owner", {
-    params: { status },
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return res.data;
+export const getTripsByOwner = async (status, token) => {
+  try {
+    const res = await api.get("/trips/by-owner", {
+      params: { status },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    if (error.response?.status === 404) {
+      return { success: false, data: [] };
+    }
+    throw error;
+  }
 };
 
-export const createTrip = async (tripData) => {
+export const createTrip = async (tripData, token) => {
   const res = await api.post("/trips", tripData, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -80,8 +87,17 @@ export const createTrip = async (tripData) => {
   return res.data;
 };
 
-export const updateTrip = async (id, tripData) => {
+export const updateTrip = async (id, tripData, token) => {
   const res = await api.patch(`/trips/${id}`, tripData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.data;
+};
+
+export const deleteTrip = async (id, token) => {
+  const res = await api.delete(`/trips/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
