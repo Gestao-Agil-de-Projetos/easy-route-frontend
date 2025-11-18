@@ -4,8 +4,8 @@ import RouteAvatar from '../../atoms/RouteAvatar';
 import RouteText from '../../atoms/RouteText';
 
 export default function UserProfile({ 
-  userName = 'Pedro Tigre', 
-  userEmail = 'pedro.tigre@email.com',
+  userName,
+  userEmail,
   userInitials = 'PT',
   avatarTextColor
 }) {
